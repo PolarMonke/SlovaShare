@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100vh; 
     background-color: var(--background-color);
 }
 
@@ -32,29 +32,6 @@
     font-weight: bold;
 }
 
-.form-group input {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 2px solid var(--border-color);
-    background-color: var(--background-color);
-    color: var(--text-color);
-}
-
-.form-group input:hover {
-    border-color: var(--border-color-hover);
-}
-
-.form-group input:focus {
-    border-color: var(--border-color-focus);
-}
-
-.error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
-}
-
 .login-input {
     width: 100%;
     padding: 8px;
@@ -63,16 +40,22 @@
     background-color: var(--background-color);
     color: var(--text-color);
     box-sizing: border-box;
-  }
-  
-  .login-input:hover {
+}
+
+.login-input:hover {
     border-color: var(--border-color-hover);
-  }
-  
-  .login-input:focus {
+}
+
+.login-input:focus {
     border-color: var(--border-color-focus);
-    outline: none; 
-  }
+    outline: none;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
 
 .login-button {
     width: 100%;
@@ -83,6 +66,7 @@
     color: var(--text-color);
     font-size: 16px;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 
 .login-button:hover {
@@ -91,4 +75,18 @@
 
 .login-button:focus {
     border-color: var(--border-color-focus);
+}
+
+.toggle-button {
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+    text-decoration: underline;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.toggle-button:hover {
+    color: var(--border-color-hover);
 }
