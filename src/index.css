@@ -1,10 +1,10 @@
 :root.light-theme {
     --background-color: #f5efff;
     --text-color: #2e073f;
-    --header-bg-color: #dfd8eb;
-    --border-color: #f5efff;
-    --border-color-hover: #cdc1ff;
-    --border-color-click: #a594f9;
+    --header-bg-color: #e5d7ff;
+    --border-color: #eadefd;
+    --border-color-hover: #c3b4ff;
+    --border-color-focus: #a594f9;
 }
   
 :root.dark-theme {
@@ -13,7 +13,7 @@
     --header-bg-color: #4d2c6a;
     --border-color: #9b7ebd;
     --border-color-hover: #d4bee4;
-    --border-color-click: #eeeeee;
+    --border-color-focus: #eeeeee;
 }
   
 body {
@@ -34,10 +34,16 @@ button {
     background-color: var(--background-color);
     border: 2px solid var(--border-color);
     border-radius: 10px;
-    padding: 4px;
+    padding: 5px;
+    margin-left: 3px;
     cursor: pointer;
 }
-
+button:hover {
+    border-color: var(--border-color-hover);
+}
+button:focus {
+    border-color: var(--border-color-focus);
+}
 input {
     display: inline-block;
     cursor: text;
@@ -54,8 +60,9 @@ input:hover {
     border-color: var(--border-color-hover);
 }
 
-input:active {
-    border-color: var(--border-color-click);
+input:focus {
+    outline: none;
+    border-color: var(--border-color-focus);
 }
 
 .icon {
