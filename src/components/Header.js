@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 import { FiUserCheck } from "react-icons/fi";
 import { FiSliders } from "react-icons/fi";
@@ -31,7 +32,9 @@ export default function Header() {
     return (
         <header>
             <div className="header-container">
-                <div className="logo">Logo</div>
+                <div className="logo">
+                <Link className="logo" to="/">SlovaShare</Link>
+                </div>
                 <div className="search-area">
                     <input className='search-bar'></input>
                     <button className='search-button'><FiSearch className="icon"/></button>
@@ -47,9 +50,14 @@ export default function Header() {
                     </div>
                     <div className="profile" onClick={toggleLogin}>
                     {isLoggedIn ? (
-                        <FiUserCheck className="icon"/>
+                        <Link className="icon" to="/account">
+                            <FiUserCheck className="icon"/>
+                        </Link>
                         ) : (
-                        <FiLogIn className="icon"/>
+                        <Link className="icon"  to="/login">
+                            <FiLogIn className="icon"/>
+                        </Link>
+                        
                     )}
                     </div>
                     
