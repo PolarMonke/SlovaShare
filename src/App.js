@@ -3,6 +3,7 @@ import {Routes, Route, BrowserRouter } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Account from './pages/Account';
+import AccountPage from './pages/AccountPage';
 import Story from './pages/Story';
 import LogIn from "./pages/LogIn";
 
@@ -14,6 +15,7 @@ function App() {
         <Routes>
         <Route path="/" element={<Home/>}/>
           <Route path="/account" element={<Account/>}/>
+          <Route path="/account/:id" element={<AccountPage />} />
           <Route path="/story" element={<Story/>}/>
           <Route path="/login" element={<LogIn />}/>
         </Routes>
