@@ -1,4 +1,3 @@
-// src/pages/AccountPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -41,11 +40,11 @@ const AccountPage = () => {
         <div className="account-container">
         <div className="profile-header">
             <img 
-            src={userData.profileImage || '/default-avatar.png'} 
+            src={userData.profileImage || '/img/default.png'} 
             alt="Profile" 
             className="profile-image"
             />
-            <h1>{userData.login}'s Profile</h1>
+            <h1>{userData.login}</h1>
         </div>
 
         <div className="profile-details">
