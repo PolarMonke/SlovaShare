@@ -76,16 +76,45 @@ export default function LogIn() {
   };
 
   const handleLogin = async () => {
-    const response = await axios.post('https://your-api.com/users/login', {
-      login: username,
-      password: password
-    });
-
-    localStorage.setItem('authToken', response.data.token);
-    localStorage.setItem('userId', response.data.user.id);
-    
-    console.log('Login successful:', response.data);
-    navigate(`/account/${response.data.user.id}`);
+    try {
+      const response = await axios.post('http://localhost:5076/users/login', 
+        {
+          login: username,
+          password: password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      console.log('Login successful:', response.data);
+      localStorage.setItem('userId', response.data.id);
+      navigate(`/account/${response.data.id}`);
+    } catch (err) {
+      let errorMessage = 'Login failed';
+      
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        console.error('Login error response:', err.response.data);
+        errorMessage = err.response.data?.message || errorMessage;
+        
+        if (err.response.status === 401) {
+          errorMessage = 'Invalid username or password';
+        }
+      } else if (err.request) {
+        // The request was made but no response was received
+        console.error('Login request error:', err.request);
+        errorMessage = 'No response from server';
+      } else {
+        // Something happened in setting up the request
+        console.error('Login setup error:', err.message);
+        errorMessage = 'Request setup failed';
+      }
+  
+      setApiError(errorMessage);
+    }
   };
 
   const handleSendCode = async () => {
