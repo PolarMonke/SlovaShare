@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 import { FiUserCheck } from "react-icons/fi";
 import { FiSliders } from "react-icons/fi";
@@ -9,6 +10,7 @@ import { FiMoon } from "react-icons/fi";
 import { FiSun } from "react-icons/fi";
 
 export default function Header() {
+    const { currentUser } = useAuth();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const toggleLogin = () => {
         setIsLoggedIn(!isLoggedIn);
@@ -50,7 +52,7 @@ export default function Header() {
                     </div>
                     <div className="profile" onClick={toggleLogin}>
                     {isLoggedIn ? (
-                        <Link className="icon" to="/account">
+                        <Link className="icon" to={`/account/${currentUser?.id}`}>
                             <FiUserCheck className="icon"/>
                         </Link>
                         ) : (

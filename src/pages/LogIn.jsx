@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/LogIn.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function LogIn() {
+    const { login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -57,68 +59,54 @@ export default function LogIn() {
             return;
         }
 
-      const response = await axios.post('http://localhost:5076/users/register', 
-          {
-              login: username,
-              email: email,
-              password: password,
-              verificationCode: code
-          },
-          {
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              withCredentials: true
-          }
-      );
+        const response = await axios.post('http://localhost:5076/users/register', 
+            {
+                login: username,
+                email: email,
+                password: password,
+                verificationCode: code
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            }
+        );
 
-      console.log('Registration successful:', response.data);
-      alert('Registration successful! Please log in.');
-      resetForm();
-      setIsNewAccount(false);
+        console.log('Registration successful:', response.data);
+        alert('Registration successful! Please log in.');
+        resetForm();
+        setIsNewAccount(false);
     };
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:5076/users/login', 
-                {
-                    login: username,
-                    password: password
-                },
-                {
-                    headers: {
-                      'Content-Type': 'application/json'
-                    }
-                }
-            );
-      
-            console.log('Login successful:', response.data);
-            localStorage.setItem('userId', response.data.id);
-            navigate(`/account/${response.data.id}`);
-        }
-        catch (err) {
+            const userData = await login({ 
+                login: username, 
+                password: password 
+            });
+            
+            console.log('Login successful:', userData);
+            navigate(`/account/${userData.id}`);
+        } catch (err) {
             let errorMessage = 'Login failed';
-
+            
             if (err.response) {
-                // The request was made and the server responded with a status code
                 console.error('Login error response:', err.response.data);
                 errorMessage = err.response.data?.message || errorMessage;
                 
                 if (err.response.status === 401) {
                     errorMessage = 'Invalid username or password';
                 }
-            }
-            else if (err.request) {
-                // The request was made but no response was received
+            } else if (err.request) {
                 console.error('Login request error:', err.request);
                 errorMessage = 'No response from server';
-            }
-            else {
-                // Something happened in setting up the request
+            } else {
                 console.error('Login setup error:', err.message);
                 errorMessage = 'Request setup failed';
             }
-        
+            
             setApiError(errorMessage);
         }
     };
