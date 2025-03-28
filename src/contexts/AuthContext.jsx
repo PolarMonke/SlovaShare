@@ -6,32 +6,20 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const calledRef = useRef(false);
-
-    const syncAuthState = () => {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            setUser(null);
-            return false;
-        }
-        return true;
-    };
 
     const loadUser = async () => {
-        if (calledRef.current) return;
-        calledRef.current = true;
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            setLoading(false);
+            return;
+        }
         
         try {
-            const token = localStorage.getItem('authToken');
-            if (!token) {
-                setLoading(false);
-                return;
-            }
-            
-            const response = await api.get('/users/me');
+            const response = await api.get('/users/me', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setUser(response.data);
         } catch (err) {
-            console.log('No active session');
             localStorage.removeItem('authToken');
             setUser(null);
         } finally {

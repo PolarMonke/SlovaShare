@@ -5,7 +5,7 @@ import '../styles/AccountPage.css';
 import { useAuth } from '../contexts/AuthContext';
 
 const AccountPage = () => {
-    const { user: currentUser } = useAuth();
+    const { user: currentUser, logout } = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState(null);
@@ -21,7 +21,7 @@ const AccountPage = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:5076/users/${profileId}`,
+                    `http://localhost:5076/users/${profileId}/profile`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -38,6 +38,7 @@ const AccountPage = () => {
                 setError(err.response?.data?.message || err.message || 'Failed to load profile');
                 
                 if (err.response?.status === 401) {
+                    localStorage.removeItem('authToken');
                     navigate('/login');
                 }
             } finally {
@@ -45,8 +46,22 @@ const AccountPage = () => {
             }
         };
 
-        fetchProfileData();
-    }, [id, currentUser?.id, navigate]);
+        if (currentUser || localStorage.getItem('authToken')) {
+            fetchProfileData();
+        } else {
+            navigate('/login');
+        }
+    }, [id, currentUser, navigate]);
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/login');
+        }
+        catch (error) {
+            console.error('Logout failed:', error);
+        }
+    }
 
     if (isLoading) return <div className="loading">Loading profile...</div>;
     if (error) return <div className="error">{error}</div>;
@@ -60,7 +75,7 @@ const AccountPage = () => {
                     alt="Profile" 
                     className="profile-image"
                 />
-                <h1>{profileData.login}'s Profile</h1>
+                <h1>{profileData.login}</h1>
             </div>
 
             <div className="profile-details">
@@ -85,6 +100,12 @@ const AccountPage = () => {
                             className="edit-button"
                         >
                             Edit Profile
+                        </button>
+                        <button 
+                            onClick={handleLogout}
+                            className="edit-button"
+                        >
+                            Log Out
                         </button>
                     </div>
                 )}
