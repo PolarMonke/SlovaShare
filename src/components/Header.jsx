@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-import { FiUserCheck } from "react-icons/fi";
 import { FiSliders } from "react-icons/fi";
 import { FiSearch } from "react-icons/fi";
 import { FiLogIn } from "react-icons/fi";
@@ -50,7 +49,18 @@ export default function Header() {
                     <div className="profile">
                         {user ? (
                             <Link to={`/account/${user.id}`}>
-                                <FiUserCheck className="icon"/>
+                                {/* Show profile image if exists, otherwise default icon */}
+                                {user.profileImage ? (
+                                    <img 
+                                        src={user.profileImage} 
+                                        alt="Profile" 
+                                        className="profile-picture"
+                                    />
+                                ) : (
+                                    <div className="profile-initial">
+                                        {user.login.charAt(0).toUpperCase()}
+                                    </div>
+                                )}
                             </Link>
                         ) : (
                             <Link to="/login">

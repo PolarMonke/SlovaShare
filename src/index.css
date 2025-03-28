@@ -67,9 +67,9 @@ header {
     padding: 5px;
     box-sizing: border-box;
     height: auto;
-  }
-  
-  header .header-container {
+}
+
+header .header-container {
     background-color: var(--header-bg-color);
     display: flex;
     justify-content: space-between;
@@ -79,9 +79,9 @@ header {
     border-radius: 10px;
     border: 2px solid var(--border-color);
     padding: 10px;
-  }
-  
-  header .logo {
+}
+
+header .logo {
     flex: 1;
     margin: 0 10px;
     text-align: left;
@@ -89,53 +89,74 @@ header {
     font-family: 'Righteous', sans-serif;
     font-weight: 400;
     text-decoration: none;
-  }
-  
-  header .logo:active {
+}
+
+header .logo:active {
     color: var(--border-color-focus);
-  }
-  
-  header .search-area {
+}
+
+header .search-area {
     flex: 2;
     text-align: center;
     color: var(--text-color);
-  }
-  
-  header .right-container {
+}
+
+header .right-container {
     flex: 1;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 16px;
     margin: 0 10px;
-  }
-  
-  header .theme-toggle,
-  header .profile {
+}
+
+header .theme-toggle,
+header .profile {
     cursor: pointer;
-  }
-  
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     header .header-container {
-      flex-direction: column; 
-      align-items: stretch; 
-      gap: 10px;
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: 10px;
     }
-  
+
     header .logo {
-      order: 1; 
-      text-align: center;
-      margin: 0; 
+        order: 1; 
+        text-align: center;
+        margin: 0; 
     }
-  
+
     header .search-area {
-      order: 2; 
-      text-align: center;
+        order: 2; 
+        text-align: center;
+    }
+
+    header .right-container {
+        order: 3; 
+        justify-content: center; 
+        margin: 0; 
     }
   
-    header .right-container {
-      order: 3; 
-      justify-content: center; 
-      margin: 0; 
-    }
-  }
+}
+.profile-picture {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    transition: transform 0.3s ease;
+}
+
+.profile-picture:hover {
+    border-color: var(--border-color-hover);
+}
+.profile-picture:focus {
+    border-color: var(--border-color-focus);
+}
+
+.profile-initial {
+    width: 32px;
+    height: 32px;
+}
