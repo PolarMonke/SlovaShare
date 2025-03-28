@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function LogIn() {
-    const { login } = useAuth();
+    const { login, loadUser } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -86,8 +86,10 @@ export default function LogIn() {
                 login: username, 
                 password: password 
             });
-            
+            // const userData = await login(credentials);
+
             console.log('Login successful:', userData);
+            await loadUser();
             navigate(`/account/${userData.id}`);
         } catch (err) {
             let errorMessage = 'Login failed';

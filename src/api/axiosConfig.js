@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
     baseURL: 'http://localhost:5076',
+    withCredentials: true
 });
 
 api.interceptors.request.use(config => {
@@ -17,7 +18,6 @@ api.interceptors.response.use(
     error => {
         if (error.response?.status === 401) {
             localStorage.removeItem('authToken');
-            window.location.href = '/login';
         }
         return Promise.reject(error);
     }

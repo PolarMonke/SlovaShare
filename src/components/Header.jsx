@@ -10,11 +10,8 @@ import { FiMoon } from "react-icons/fi";
 import { FiSun } from "react-icons/fi";
 
 export default function Header() {
-    const { currentUser } = useAuth();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const toggleLogin = () => {
-        setIsLoggedIn(!isLoggedIn);
-    };
+    const { user } = useAuth();
+
     const [isDarkMode, setIsDarkMode] = useState(false);
     const toggleTheme = () => {
         setIsDarkMode(!isDarkMode);
@@ -50,17 +47,16 @@ export default function Header() {
                         <FiMoon className="icon"/>
                     )}
                     </div>
-                    <div className="profile" onClick={toggleLogin}>
-                    {isLoggedIn ? (
-                        <Link className="icon" to={`/account/${currentUser?.id}`}>
-                            <FiUserCheck className="icon"/>
-                        </Link>
+                    <div className="profile">
+                        {user ? (
+                            <Link to={`/account/${user.id}`}>
+                                <FiUserCheck className="icon"/>
+                            </Link>
                         ) : (
-                        <Link className="icon"  to="/login">
-                            <FiLogIn className="icon"/>
-                        </Link>
-                        
-                    )}
+                            <Link to="/login">
+                                <FiLogIn className="icon"/>
+                            </Link>
+                        )}
                     </div>
                     
                 </div>

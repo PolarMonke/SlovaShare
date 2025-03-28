@@ -21,7 +21,7 @@ const AccountPage = () => {
                 }
 
                 const response = await axios.get(
-                    `http://localhost:5076/users/${profileId}/profile`,
+                    `http://localhost:5076/users/${profileId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`
