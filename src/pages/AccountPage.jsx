@@ -5,8 +5,8 @@ import '../styles/AccountPage.css';
 import { useAuth } from '../contexts/AuthContext';
 
 const AccountPage = () => {
-    const { id } = useParams();
     const { user: currentUser } = useAuth();
+    const { id } = useParams();
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);

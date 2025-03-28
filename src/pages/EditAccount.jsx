@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import '../styles/EditAccount.css';
 
 const EditAccount = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [formData, setFormData] = useState({
         login: '',
         email: '',
@@ -16,18 +18,34 @@ const EditAccount = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        if (!user || user.id !== parseInt(id)) {
+            navigate('/login');
+            return;
+        }
+
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`http://localhost:5076/users/${id}/profile`);
+                const response = await axios.get(
+                    `http://localhost:5076/users/${id}/profile`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                        }
+                    }
+                );
+                
                 setFormData({
                     login: response.data.login,
                     email: response.data.email,
-                    description: response.data.description,
-                    profileImage: response.data.profileImage
+                    description: response.data.description || '',
+                    profileImage: response.data.profileImage || ''
                 });
             }
             catch (err) {
                 setError(err.response?.data?.message || 'Failed to load profile');
+                if (err.response?.status === 401) {
+                    navigate('/login');
+                }
             }
             finally {
                 setIsLoading(false);
@@ -35,7 +53,7 @@ const EditAccount = () => {
         };
 
         fetchProfile();
-    }, [id]);
+    }, [id, user, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -45,24 +63,28 @@ const EditAccount = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(
+            await axios.put(
                 `http://localhost:5076/users/${id}`, 
-                formData, 
                 {
-                    headers: { 'Content-Type': 'application/json' }
+                    login: formData.login,
+                    email: formData.email,
+                    description: formData.description,
+                    profileImage: formData.profileImage
+                },
+                {
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    }
                 }
             );
-        
-            setFormData({
-                login: response.data.login,
-                email: response.data.email,
-                description: response.data.description,
-                profileImage: response.data.profileImage
-            });
             
             navigate(`/account/${id}`);
         } catch (err) {
             setError(err.response?.data?.message || 'Update failed');
+            if (err.response?.status === 401) {
+                navigate('/login');
+            }
         }
     };
 
@@ -102,6 +124,7 @@ const EditAccount = () => {
                         value={formData.description}
                         onChange={handleChange}
                         rows="4"
+                        placeholder="Tell us about yourself..."
                     />
                 </div>
 
@@ -112,7 +135,15 @@ const EditAccount = () => {
                         name="profileImage"
                         value={formData.profileImage}
                         onChange={handleChange}
+                        placeholder="https://example.com/image.jpg"
                     />
+                    {formData.profileImage && (
+                        <img 
+                            src={formData.profileImage} 
+                            alt="Profile preview" 
+                            className="profile-image-preview"
+                        />
+                    )}
                 </div>
 
                 <div className="button-group">
