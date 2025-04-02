@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 function AppContent() {
+
   const { loading } = useAuth();
   
   if (loading) {

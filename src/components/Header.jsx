@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
+import '../api/i18n';
 
-import { FiSliders } from "react-icons/fi";
-import { FiSearch } from "react-icons/fi";
-import { FiLogIn } from "react-icons/fi";
-import { FiMoon } from "react-icons/fi";
-import { FiSun } from "react-icons/fi";
+import { FiSliders, FiSearch, FiLogIn, FiMoon, FiSun, FiChevronDown } from "react-icons/fi";
 
 export default function Header() {
     const { user } = useAuth();
+    const { t, i18n } = useTranslation();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const [isDarkMode, setIsDarkMode] = useState(() => {
         const savedTheme = localStorage.getItem('theme');
@@ -19,6 +19,10 @@ export default function Header() {
         const newTheme = !isDarkMode;
         setIsDarkMode(newTheme);
         localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    };
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+        localStorage.setItem('i18nextLng', lng);
     };
 
     React.useEffect(() => {
@@ -39,11 +43,39 @@ export default function Header() {
                 <Link className="logo" to="/">SlovaShare</Link>
                 </div>
                 <div className="search-area">
-                    <input className='search-bar'></input>
+                    <input className='search-bar' placeholder={t('searchPlaceholder')}></input>
                     <button className='search-button'><FiSearch className="icon"/></button>
                     <button className='filter-button'><FiSliders className="icon"/></button>
                 </div>
                 <div className='right-container'>
+                <div className="language-switcher">
+                    <button 
+                        className="language-button"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        aria-expanded={isDropdownOpen}
+                        aria-haspopup="true"
+                    >
+                        {i18n.language.toUpperCase()}
+                        <FiChevronDown className={`dropdown-icon ${isDropdownOpen ? 'open' : ''}`} />
+                    </button>
+                    
+                    {isDropdownOpen && (
+                        <div className="language-dropdown">
+                        <button 
+                            onClick={() => changeLanguage('en')}
+                            className={i18n.language === 'en' ? 'active' : ''}
+                        >
+                            English
+                        </button>
+                        <button 
+                            onClick={() => changeLanguage('be')}
+                            className={i18n.language === 'be' ? 'active' : ''}
+                        >
+                            Беларуская
+                        </button>
+                        </div>
+                    )}
+                </div>
                     <div className="theme-toggle" onClick={toggleTheme}>
                     {isDarkMode ? (
                         <FiSun className="icon"/>

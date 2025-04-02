@@ -111,8 +111,11 @@ header .right-container {
 }
 
 header .theme-toggle,
+header .language-switcher,
 header .profile {
     cursor: pointer;
+    color: var(--text-color);
+    font-family: 'DM Sans', sans-serif;
 }
 
 @media (max-width: 768px) {
@@ -159,4 +162,57 @@ header .profile {
 .profile-initial {
     width: 32px;
     height: 32px;
+}
+
+.language-switcher {
+    position: relative;
+    margin-left: 8px;
+}
+
+.language-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    transition: all 0.2s ease;
+    color: var(--text-color);
+}
+
+.language-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--header-bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 5px 0;
+    margin-top: 5px;
+    min-width: 120px;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.language-dropdown button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 6px 12px;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-color);
+}
+
+.language-dropdown button:hover {
+    background-color: var(--background-color);
+}
+
+.language-dropdown button.active {
+    font-weight: 400;
+    color: var(--border-color-focus);
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.dark-theme .language-dropdown button.active {
+    background-color: rgba(255, 255, 255, 0.1);
 }

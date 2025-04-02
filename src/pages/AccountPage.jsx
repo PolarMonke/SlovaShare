@@ -29,17 +29,18 @@ const AccountPage = () => {
                     }
                 );
 
-                setProfileData({
-                    ...response.data,
-                    id: profileId 
-                });
-            } catch (err) {
+                setProfileData(response.data);
+            }
+            catch (err) {
                 console.error('Profile load error:', err);
                 setError(err.response?.data?.message || err.message || 'Failed to load profile');
                 
                 if (err.response?.status === 401) {
                     localStorage.removeItem('authToken');
                     navigate('/login');
+                }
+                else if (err.response?.status === 403) {
+                    setError("You don't have permission to view this profile");
                 }
             } finally {
                 setIsLoading(false);
@@ -48,7 +49,8 @@ const AccountPage = () => {
 
         if (currentUser || localStorage.getItem('authToken')) {
             fetchProfileData();
-        } else {
+        }
+        else {
             navigate('/login');
         }
     }, [id, currentUser, navigate]);
@@ -61,7 +63,7 @@ const AccountPage = () => {
         catch (error) {
             console.error('Logout failed:', error);
         }
-    }
+    };
 
     if (isLoading) return <div className="loading">Loading profile...</div>;
     if (error) return <div className="error">{error}</div>;
@@ -76,6 +78,7 @@ const AccountPage = () => {
                     className="profile-image"
                 />
                 <h1>{profileData.login}</h1>
+                {profileData.isCurrentUser && <span className="profile-badge">(You)</span>}
             </div>
 
             <div className="profile-details">
@@ -93,7 +96,7 @@ const AccountPage = () => {
                     </ul>
                 </div>
 
-                {currentUser && currentUser.id === parseInt(id) && (
+                {profileData.isCurrentUser && (
                     <div className="profile-actions">
                         <button 
                             onClick={() => navigate(`/account/${id}/edit`)}
