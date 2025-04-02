@@ -5,14 +5,50 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
     en: {
       translation: {
-        "searchPlaceholder": "Search...",
-        
+        "SearchPlaceholder": "Search...",
+
+        "All rights reserved": "All rights stolen by MCE",
+
+        "You": "You",
+        "About": "About",
+        "No Description": "No description provided yet",
+        "Statistics": "Statistics",
+        "Stories Started": "Stories Started",
+        "Stories Contributed": "Stories Contributed",
+        "Likes Received": "Likes Recieved",
+        "Edit Profile": "Edit Profile",
+        "Log Out": "Log Out",
+
+        "Username": "Username",
+        "Email": "Email",
+        "Description": "Description",
+        "Profile Image URL": "Profile Image URL",
+        "Save Changes": "Save Changes",
+        "Cancel": "Cancel",
       }
     },
     be: {
       translation: {
-        "searchPlaceholder": "Пошук...",
-        
+        "Search Placeholder": "Пошук...",
+
+        "All rights reserved": "Усе правы скраў МКП",
+
+        "You": "Вы",
+        "About": "Апісанне",
+        "No Description": "Пакуль што без апісання",
+        "Statistics": "Статыстыка",
+        "Stories Started": "Пачатыя апавяданні",
+        "Stories Contributed": "Удзел у апавяданнях",
+        "Likes Received": "Атрыманыя лайкі",
+        "Edit Profile": "Рэдагаваць профіль",
+        "Log Out": "Выйсці",
+
+        "Username": "Імя",
+        "Email": "Электронная пошта",
+        "Description": "Апісанне",
+        "Profile Image URL": "URL фота профілю",
+        "Save Changes": "Захаваць змены",
+        "Cancel": "Скасаваць",
       }
     }
   };

@@ -3,8 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/AccountPage.css';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const AccountPage = () => {
+    const { t } = useTranslation();
     const { user: currentUser, logout } = useAuth();
     const { id } = useParams();
     const navigate = useNavigate();
@@ -78,21 +80,21 @@ const AccountPage = () => {
                     className="profile-image"
                 />
                 <h1>{profileData.login}</h1>
-                {profileData.isCurrentUser && <span className="profile-badge">(You)</span>}
+                {profileData.isCurrentUser && <span className="profile-badge">({t('You')})</span>}
             </div>
 
             <div className="profile-details">
                 <div className="detail-group">
-                    <h3>About</h3>
-                    <p>{profileData.description || 'No description provided yet'}</p>
+                    <h3>{t('About')}</h3>
+                    <p>{profileData.description || t('No Description')}</p>
                 </div>
 
                 <div className="detail-group">
-                    <h3>Statistics</h3>
+                    <h3>{t('Statistics')}</h3>
                     <ul className="stats-list">
-                        <li>Stories Started: {profileData.storiesStarted || 0}</li>
-                        <li>Stories Contributed: {profileData.storiesContributed || 0}</li>
-                        <li>Likes Received: {profileData.likesReceived || 0}</li>
+                        <li>{t('Stories Started')}: {profileData.storiesStarted || 0}</li>
+                        <li>{t('Stories Contributed')}: {profileData.storiesContributed || 0}</li>
+                        <li>{t('Likes Received')}: {profileData.likesReceived || 0}</li>
                     </ul>
                 </div>
 
@@ -102,13 +104,13 @@ const AccountPage = () => {
                             onClick={() => navigate(`/account/${id}/edit`)}
                             className="edit-button"
                         >
-                            Edit Profile
+                            {t('Edit Profile')}
                         </button>
                         <button 
                             onClick={handleLogout}
                             className="edit-button"
                         >
-                            Log Out
+                            {t('Log Out')}
                         </button>
                     </div>
                 )}

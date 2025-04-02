@@ -43,7 +43,7 @@ export default function Header() {
                 <Link className="logo" to="/">SlovaShare</Link>
                 </div>
                 <div className="search-area">
-                    <input className='search-bar' placeholder={t('searchPlaceholder')}></input>
+                    <input className='search-bar' placeholder={t('Search Placeholder')}></input>
                     <button className='search-button'><FiSearch className="icon"/></button>
                     <button className='filter-button'><FiSliders className="icon"/></button>
                 </div>

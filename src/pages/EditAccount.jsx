@@ -3,8 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import '../styles/EditAccount.css';
+import { useTranslation } from 'react-i18next';
 
 const EditAccount = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useAuth();
@@ -93,10 +95,10 @@ const EditAccount = () => {
 
     return (
         <div className="edit-account-container">
-            <h1>Edit Profile</h1>
+            <h1>{t("Edit Profile")}</h1>
             <form onSubmit={handleSubmit} className="edit-form">
                 <div className="form-group">
-                    <label>Username</label>
+                    <label>{t("Username")}</label>
                     <input
                         type="text"
                         name="login"
@@ -107,7 +109,7 @@ const EditAccount = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Email</label>
+                    <label>{t("Email")}</label>
                     <input
                         type="email"
                         name="email"
@@ -118,7 +120,7 @@ const EditAccount = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Description</label>
+                    <label>{t("Description")}</label>
                     <textarea
                         name="description"
                         value={formData.description}
@@ -129,7 +131,7 @@ const EditAccount = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Profile Image URL</label>
+                    <label>{t("Profile Image URL")}</label>
                     <input
                         type="url"
                         name="profileImage"
@@ -148,14 +150,14 @@ const EditAccount = () => {
 
                 <div className="button-group">
                     <button type="submit" className="save-button">
-                        Save Changes
+                        {t("Save Changes")}
                     </button>
                     <button 
                         type="button" 
                         onClick={() => navigate(`/account/${id}`)}
                         className="cancel-button"
                     >
-                        Cancel
+                        {t("Cancel")}
                     </button>
                 </div>
             </form>
