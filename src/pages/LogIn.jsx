@@ -3,8 +3,10 @@ import axios from 'axios';
 import '../styles/LogIn.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export default function LogIn() {
+    const { t } = useTranslation();
     const { login, loadUser } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -50,34 +52,57 @@ export default function LogIn() {
         console.log("Submitting:", { username, email, password, code });
       
         if (!username.trim() || !email.trim() || !password.trim()) {
-            setApiError('All fields are required');
+            setApiError(t('register.allFieldsRequired'));
             return;
         }
-
+    
         if (!isCodeSent) {
             await handleSendCode();
             return;
         }
-
-        const response = await axios.post('http://localhost:5076/users/register', 
-            {
-                login: username,
-                email: email,
-                password: password,
-                verificationCode: code
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
+    
+        try {
+            const response = await axios.post('http://localhost:5076/users/register', 
+                {
+                    login: username,
+                    email: email,
+                    password: password,
+                    verificationCode: code
                 },
-                withCredentials: true
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    withCredentials: true
+                }
+            );
+    
+            console.log('Registration successful:', response.data);
+            alert(t('register.success'));
+            resetForm();
+            setIsNewAccount(false);
+        } catch (error) {
+            console.error('Registration error:', error);
+            
+            if (error.response?.data) {
+                const errorData = error.response.data;
+    
+                if (errorData.field === 'password') {
+                    setApiError(t("Password In Use"));
+                    const newErrors = { username: '', password: '', email: '', code: '' }; 
+                    newErrors.password = t('Password In Use By User', { login: errorData.login })
+                    setErrors(newErrors);
+                } else if (errorData.field === 'email') {
+                    setApiError(t('register.emailInUse'));
+                } else if (errorData.message) {
+                    setApiError(errorData.message);
+                } else {
+                    setApiError(t('General Error'));
+                }
+            } else {
+                setApiError(t('General Error'));
             }
-        );
-
-        console.log('Registration successful:', response.data);
-        alert('Registration successful! Please log in.');
-        resetForm();
-        setIsNewAccount(false);
+        }
     };
 
     const handleLogin = async () => {
@@ -129,30 +154,30 @@ export default function LogIn() {
         let isValid = true;
 
         if (!username.trim()) {
-            newErrors.username = 'Username is required';
+            newErrors.username = t('Username is required');
             isValid = false;
         }
 
         if (!password.trim()) {
-            newErrors.password = 'Password is required';
+            newErrors.password = t('Password is required');
             isValid = false;
         } else if (password.length < 8) {
-            newErrors.password = 'Password must be at least 8 characters';
+            newErrors.password = t('Password must be at least 8 characters');
             isValid = false;
         }
 
         if (isNewAccount) {
             if (!email.trim()) {
-                newErrors.email = 'Email is required';
+                newErrors.email = t('Email is required');
                 isValid = false;
             }
             else if (!/^\S+@\S+\.\S+$/.test(email)) {
-                newErrors.email = 'Invalid email format';
+                newErrors.email = t('Invalid email format');
                 isValid = false;
             }
 
             if (isCodeSent && !code.trim()) {
-                newErrors.code = 'Verification code is required';
+                newErrors.code = t('Verification code is required');
                 isValid = false;
             }
         }
@@ -173,12 +198,12 @@ export default function LogIn() {
     return (
         <div className="login-container">
             <form className="login-form" onSubmit={handleSubmit}>
-                <h2>{isNewAccount ? 'Create Account' : 'Log In'}</h2>
+                <h2>{isNewAccount ? t('Create Account') : t('Log In')}</h2>
                 
                 {apiError && <div className="error">{apiError}</div>}
 
                 <div className="form-group">
-                    <label>Username</label>
+                    <label>{t("Username")}</label>
                     <input
                       type="text"
                       value={username}
@@ -189,7 +214,7 @@ export default function LogIn() {
                 </div>
 
                 <div className="form-group">
-                    <label>Password</label>
+                    <label>{t("Password")}</label>
                     <input
                       type="password"
                       value={password}
@@ -203,7 +228,7 @@ export default function LogIn() {
                 {isNewAccount && (
                     <>
                       <div className="form-group">
-                          <label>Email</label>
+                          <label>{t("Email")}</label>
                           <input
                             type="email"
                             value={email}
@@ -216,7 +241,7 @@ export default function LogIn() {
 
                       {isCodeSent && (
                           <div className="form-group">
-                              <label>Verification Code</label>
+                              <label>{t('Verification Code')}</label>
                               <input
                                 type="text"
                                 value={code}
@@ -233,15 +258,15 @@ export default function LogIn() {
                           className="login-button"
                           disabled={isLoading}
                       >
-                        {isLoading ? 'Processing...' : 
-                        isCodeSent ? 'Complete Registration' : 'Send Verification Code'}
+                        {isLoading ? t('Processing...') : 
+                        isCodeSent ? t('Complete Registration') : t('Send Verification Code')}
                       </button>
                   </>
                 )}
 
                 {!isNewAccount && (
                     <button type="submit" className="login-button" disabled={isLoading}>
-                        {isLoading ? 'Logging in...' : 'Log In'}
+                        {isLoading ? t('Logging in...') : t('Log In')}
                     </button>
                 )}
 
@@ -253,7 +278,7 @@ export default function LogIn() {
                     }}
                     className="login-button toggle-button"
                 >
-                    {isNewAccount ? 'Already have an account? Log In' : 'Create New Account'}
+                    {isNewAccount ? t('Already have an account? Log In') : 'Create New Account'}
                 </button>
             </form>
         </div>
