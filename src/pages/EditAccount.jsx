@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import '../styles/EditAccount.css';
 import { useTranslation } from 'react-i18next';
+import ImageUploader from '../components/ImageUploader';
 
 const EditAccount = () => {
     const { t } = useTranslation();
@@ -117,21 +118,12 @@ const EditAccount = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>{t("Profile Image URL")}</label>
-                    <input
-                        type="url"
-                        name="profileImage"
-                        value={formData.profileImage}
-                        onChange={handleChange}
-                        placeholder="https://example.com/image.jpg"
+                    <label>{t("Profile Image")}</label>
+                    <ImageUploader 
+                        currentImage={formData.profileImage}
+                        onUploadComplete={(url) => setFormData(prev => ({ ...prev, profileImage: url }))}
                     />
-                    {formData.profileImage && (
-                        <img 
-                            src={formData.profileImage} 
-                            alt="Profile preview" 
-                            className="profile-image-preview"
-                        />
-                    )}
+                    
                 </div>
 
                 <div className="button-group">

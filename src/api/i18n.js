@@ -26,6 +26,11 @@ const resources = {
         "Profile Image URL": "Profile Image URL",
         "Save Changes": "Save Changes",
         "Cancel": "Cancel",
+        
+        "Preview" : "Preview",
+        "Drag & drop image here" : "Drag & drop image here",
+        "or" : "or",
+        "Browse files" : "Browse files",
       }
     },
     be: {
@@ -51,6 +56,11 @@ const resources = {
         "Profile Image URL": "URL фота профілю",
         "Save Changes": "Захаваць змены",
         "Cancel": "Скасаваць",
+
+        "Preview" : "Прэв'ю",
+        "Drag & drop image here" : "Перацягніце выяву сюды",
+        "or" : "або",
+        "Browse files" : "Адкрыць файлы",
       }
     }
   };
