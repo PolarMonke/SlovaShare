@@ -5,9 +5,9 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
     en: {
       translation: {
-        "SearchPlaceholder": "Search...",
+        "Search Placeholder": "Search...",
 
-        "All rights reserved": "All rights stolen by MCE",
+        "All rights reserved": "All rights stolen by MCB",
 
         "You": "You",
         "About": "About",
@@ -22,6 +22,7 @@ const resources = {
         "Username": "Username",
         "Email": "Email",
         "Description": "Description",
+        "Description Placeholder": "Tell us about yourself...",
         "Profile Image URL": "Profile Image URL",
         "Save Changes": "Save Changes",
         "Cancel": "Cancel",
@@ -32,7 +33,7 @@ const resources = {
         "Search Placeholder": "Пошук...",
 
         "All rights reserved": "Усе правы скраў МКП",
-
+        
         "You": "Вы",
         "About": "Апісанне",
         "No Description": "Пакуль што без апісання",
@@ -46,6 +47,7 @@ const resources = {
         "Username": "Імя",
         "Email": "Электронная пошта",
         "Description": "Апісанне",
+        "Description Placeholder": "Раскажыце пра сябе...",
         "Profile Image URL": "URL фота профілю",
         "Save Changes": "Захаваць змены",
         "Cancel": "Скасаваць",

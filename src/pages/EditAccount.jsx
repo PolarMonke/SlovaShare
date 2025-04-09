@@ -12,7 +12,6 @@ const EditAccount = () => {
     const { user } = useAuth();
     const [formData, setFormData] = useState({
         login: '',
-        email: '',
         description: '',
         profileImage: ''
     });
@@ -38,7 +37,6 @@ const EditAccount = () => {
                 
                 setFormData({
                     login: response.data.login,
-                    email: response.data.email,
                     description: response.data.description || '',
                     profileImage: response.data.profileImage || ''
                 });
@@ -69,7 +67,6 @@ const EditAccount = () => {
                 `http://localhost:5076/users/${id}`, 
                 {
                     login: formData.login,
-                    email: formData.email,
                     description: formData.description,
                     profileImage: formData.profileImage
                 },
@@ -109,24 +106,13 @@ const EditAccount = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>{t("Email")}</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
                     <label>{t("Description")}</label>
                     <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
                         rows="4"
-                        placeholder="Tell us about yourself..."
+                        placeholder={t("Description Placeholder")}
                     />
                 </div>
 
