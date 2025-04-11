@@ -227,7 +227,7 @@
 
 .cover-image {
     width: 100%;
-    max-height: 300px;
+    max-height: 350px;
     object-fit: cover;
     display: block;
 }
@@ -405,19 +405,6 @@
     margin-bottom: 1rem;
     border: 1px solid rgba(255, 68, 68, 0.3);
     font-size: 0.9rem;
-}
-
-/* Dark Theme Adjustments */
-.dark-theme .image-uploader:hover {
-    background-color: rgba(59, 30, 84, 0.3);
-}
-
-.dark-theme .submit-button {
-    color: #2e073f;
-}
-
-.dark-theme .submit-button:hover:not(:disabled) {
-    color: white;
 }
 
 /* Responsive */

@@ -1,6 +1,8 @@
+// pages/AccountPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import StoryCard from '../components/StoryCard';
 import '../styles/AccountPage.css';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +13,7 @@ const AccountPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState(null);
+    const [userStories, setUserStories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -22,16 +25,21 @@ const AccountPage = () => {
                     throw new Error('No user ID specified');
                 }
 
-                const response = await axios.get(
-                    `http://localhost:5076/users/${profileId}/profile`,
-                    {
+                const [profileRes, storiesRes] = await Promise.all([
+                    axios.get(`http://localhost:5076/users/${profileId}/profile`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`
                         }
-                    }
-                );
+                    }),
+                    axios.get(`http://localhost:5076/stories/user/${profileId}`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                        }
+                    })
+                ]);
 
-                setProfileData(response.data);
+                setProfileData(profileRes.data);
+                setUserStories(storiesRes.data);
             }
             catch (err) {
                 console.error('Profile load error:', err);
@@ -67,9 +75,9 @@ const AccountPage = () => {
         }
     };
 
-    if (isLoading) return <div className="loading">Loading profile...</div>;
+    if (isLoading) return <div className="loading">{t('Loading profile...')}</div>;
     if (error) return <div className="error">{error}</div>;
-    if (!profileData) return <div>No profile data available</div>;
+    if (!profileData) return <div>{t('No profile data available')}</div>;
 
     return (
         <div className="account-container">
@@ -114,6 +122,19 @@ const AccountPage = () => {
                         </button>
                     </div>
                 )}
+            </div>
+
+            <div className="user-stories">
+                <h2>{profileData.isCurrentUser ? t('Your Stories') : t('Published Stories')}</h2>
+                <div className="stories-grid">
+                    {userStories.length > 0 ? (
+                        userStories.map(story => (
+                            <StoryCard key={story.id} story={story} />
+                        ))
+                    ) : (
+                        <p className="no-stories">{t('No stories published yet')}</p>
+                    )}
+                </div>
             </div>
         </div>
     );
