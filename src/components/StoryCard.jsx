@@ -9,12 +9,12 @@ const StoryCard = ({ story }) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        navigate(`/stories/${story.id}`);
+        navigate(`/story/${story.id}`);
     };
 
     return (
         <div className="story-card" onClick={handleCardClick}>
-            <Link to={`/stories/${story.id}`} className="story-link">
+            <Link to={`/story/${story.id}`} className="story-link">
                 {story.coverImageUrl && (
                     <div className="story-cover">
                         <img 

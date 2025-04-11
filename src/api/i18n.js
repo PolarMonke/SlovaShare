@@ -82,8 +82,10 @@ const resources = {
         "Remove tag": "Remove tag",
         "Invalid file type. Only JPEG, PNG, GIF, WEBP allowed.": "Invalid file type. Only JPEG, PNG, GIF, WEBP allowed.",
         "JPEG, PNG, GIF or WEBP. Max 5MB.": "JPEG, PNG, GIF or WEBP. Max 5MB.",
-
+        
+        "Loading Stories..." : "Loading Stories...",
         "Latest Stories": "Latest Stories",
+        "Your Stories": "Your Stories",
         "By": "By",
         "parts": "parts",
       }
@@ -168,8 +170,10 @@ const resources = {
         "Remove tag": "Выдаліць тэг",
         "Invalid file type. Only JPEG, PNG, GIF, WEBP allowed.": "Няправільны тып файла. Дазваляюцца толькі JPEG, PNG, GIF, WEBP.",
         "JPEG, PNG, GIF or WEBP. Max 5MB.": "JPEG, PNG, GIF ці WEBP. Максімум 5MB.",
-
+        
+        "Loading Stories..." : "Апавяданні загружаюцца...",
         "Latest Stories": "Апошнія апавяданні",
+        "Your Stories": "Вашыя апавяданні",
         "By": "Ад",
         "parts": "частак",
       }

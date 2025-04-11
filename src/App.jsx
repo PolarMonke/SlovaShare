@@ -9,6 +9,7 @@ import EditAccount from "./pages/EditAccount";
 import Footer from "./components/Footer";
 import NewStoryForm from "./pages/NewStoryForm";
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import StoryPage from './pages/StoryPage';
 
 
 function AppContent() {
@@ -32,6 +33,7 @@ function AppContent() {
           <Route path="/account/:id" element={<AccountPage />} />
           <Route path="/account/:id/edit" element={<EditAccount />} />
           <Route path="/story/" element={<Story/>}/>
+          <Route path="/story/:id" element={<StoryPage/>}/>
           <Route path="/story/new" element={<NewStoryForm/>}/>
         </Route>
         
