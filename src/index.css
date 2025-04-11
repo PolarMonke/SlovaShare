@@ -1,8 +1,8 @@
 :root.light-theme {
     --background-color: #f5efff;
     --text-color: #2e073f;
-    --header-bg-color: #e5d7ff;
-    --border-color: #eadefd;
+    --header-bg-color: hsl(261, 100%, 92%);
+    --border-color: #bba1d7;
     --border-color-hover: #c3b4ff;
     --border-color-focus: #a594f9;
 }

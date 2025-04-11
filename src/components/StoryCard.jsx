@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { FaHeart, FaComment } from 'react-icons/fa';
 import '../styles/StoryCard.css';
 
 const StoryCard = ({ story }) => {
@@ -10,7 +11,6 @@ const StoryCard = ({ story }) => {
     const handleCardClick = () => {
         navigate(`/stories/${story.id}`);
     };
-
 
     return (
         <div className="story-card" onClick={handleCardClick}>
@@ -34,7 +34,19 @@ const StoryCard = ({ story }) => {
                             </Link>
                         </span>
                         <span className="meta-item">{new Date(story.createdAt).toLocaleDateString()}</span>
-                        <span className="meta-item">{story.partsCount} {t('parts')}</span>
+                        <span className="meta-item">
+                            {story.partsCount} {t('parts', { count: story.partsCount })}
+                        </span>
+                    </div>
+                    <div className="story-stats">
+                        <span className="stat-item">
+                            <FaHeart className="stat-icon" />
+                            {story.likeCount}
+                        </span>
+                        <span className="stat-item">
+                            <FaComment className="stat-icon" />
+                            {story.commentCount}
+                        </span>
                     </div>
                     <div className="story-tags">
                         {story.tags.map(tag => (
