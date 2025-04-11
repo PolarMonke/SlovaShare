@@ -7,7 +7,9 @@ import Story from './pages/Story';
 import LogIn from "./pages/LogIn";
 import EditAccount from "./pages/EditAccount";
 import Footer from "./components/Footer";
+import NewStoryForm from "./pages/NewStoryForm";
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+
 
 function AppContent() {
 
@@ -29,7 +31,8 @@ function AppContent() {
         <Route element={<ProtectedRoute />}>
           <Route path="/account/:id" element={<AccountPage />} />
           <Route path="/account/:id/edit" element={<EditAccount />} />
-          <Route path="/story" element={<Story/>}/>
+          <Route path="/story/" element={<Story/>}/>
+          <Route path="/story/new" element={<NewStoryForm/>}/>
         </Route>
         
         {/* Catch-all route */}

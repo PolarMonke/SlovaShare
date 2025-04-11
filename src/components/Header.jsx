@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import '../api/i18n';
 
-import { FiSliders, FiSearch, FiLogIn, FiMoon, FiSun, FiChevronDown } from "react-icons/fi";
+import { FiSliders, FiSearch, FiLogIn, FiMoon, FiSun, FiChevronDown, FiPlus } from "react-icons/fi";
 
 export default function Header() {
     const { user } = useAuth();
@@ -48,6 +48,15 @@ export default function Header() {
                     <button className='filter-button'><FiSliders className="icon"/></button>
                 </div>
                 <div className='right-container'>
+                {user && (
+                    <div className='new-story-button'>
+                        <Link to="/story/new">
+                            <button className="story-button">
+                                <FiPlus className="icon"/>
+                            </button>
+                        </Link>
+                    </div>
+                )}
                 <div className="language-switcher">
                     <button 
                         className="language-button"
