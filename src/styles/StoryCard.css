@@ -84,18 +84,28 @@
 }
 
 .tag {
-    background-color: var(--background-color);
+    background-color: var(--header-bg-color);
     border: 1px solid var(--border-color);
     border-radius: 15px;
     padding: 0.25rem 0.75rem;
     font-size: 0.75rem;
     color: var(--text-color);
 }
-
-.dark-theme .story-card {
-    background-color: var(--header-bg-color);
+.story-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.dark-theme .tag {
-    background-color: var(--background-color);
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    color: var(--border-color-hover);
+}
+
+.stat-icon {
+    font-size: 0.8rem;
+    color: var(--border-color-hover);
 }
