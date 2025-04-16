@@ -95,6 +95,11 @@ const resources = {
         "Post Comment": "Post Comment",
         "Part": "Part",
         "Write your comment here...": "Write your comment here...",
+        "Add Part": "Add Part",
+        "Write your part here...": "Write your part here...",
+        "Submit Part": "Submit Part",
+
+        "Edit Story": "Edit Story",
         "": "",
       }
     },
@@ -191,7 +196,13 @@ const resources = {
         "Post Comment": "Апублікаваць каментарый",
         "Part": "Частка",
         "Write your comment here...": "Напішыце сюды свой каментарый...",
+        "Add Part": "Дадаць частку",
+        "Write your part here...": "Напішыце сваю частку...",
+        "Submit Part": "Апублікаваць",
+
+        "Edit Story": "Рэдагаванне апавядання",
         "": "",
+
       }
     }
   };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { FaHeart, FaComment, FaEdit, FaTrash, FaReply, FaPlus } from 'react-icons/fa';
+import { FaHeart, FaComment, FaEdit, FaReply, FaPlus } from 'react-icons/fa';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/StoryPage.css';
 
@@ -260,7 +260,7 @@ const StoryPage = () => {
                         {story.parts.sort((a, b) => a.order - b.order).map(part => (
                             <div key={part.id} className="story-part">
                                 <div className="part-header">
-                                    <span className="part-order">Part {part.order}</span>
+                                    <span className="part-order">{t('Part')} {part.order}</span>
                                     <span className="part-author">
                                         {t('By')} {part.author.login}
                                     </span>

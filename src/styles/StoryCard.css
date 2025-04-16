@@ -24,6 +24,7 @@ div .story-cover {
     overflow: hidden;
     margin: 0rem;
     border-radius: 0px;
+    box-shadow: 0;
 }
 
 .cover-image {
