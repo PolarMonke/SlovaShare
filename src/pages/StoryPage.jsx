@@ -19,7 +19,7 @@ const StoryPage = () => {
     useEffect(() => {
         const fetchStory = async () => {
             try {
-                const response = await fetch(`/api/stories/${id}`);
+                const response = await fetch(`http://localhost:5076/stories/${id}`);
                 if (!response.ok) throw new Error('Story not found');
                 const data = await response.json();
                 setStory(data);
@@ -35,7 +35,7 @@ const StoryPage = () => {
 
         const fetchComments = async () => {
             try {
-                const response = await fetch(`/api/stories/${id}/comments`);
+                const response = await fetch(`http://localhost:5076/stories/${id}/comments`);
                 if (!response.ok) throw new Error('Failed to load comments');
                 const data = await response.json();
                 setComments(data);
@@ -46,7 +46,7 @@ const StoryPage = () => {
 
         const checkIfLiked = async () => {
             try {
-                const response = await fetch(`/api/stories/${id}/like/status`, {
+                const response = await fetch(`http://localhost:5076/stories/${id}/like/status`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -65,7 +65,7 @@ const StoryPage = () => {
 
     const handleLike = async () => {
         try {
-            const response = await fetch(`/api/stories/${id}/like`, {
+            const response = await fetch(`http://localhost:5076/stories/${id}/like`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -88,7 +88,7 @@ const StoryPage = () => {
         if (!commentText.trim()) return;
 
         try {
-            const response = await fetch(`/api/stories/${id}/comments`, {
+            const response = await fetch(`http://localhost:5076/stories/${id}/comments`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
