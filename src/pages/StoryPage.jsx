@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { FaHeart, FaComment, FaEdit, FaTrash, FaReply } from 'react-icons/fa';
+import { FaHeart, FaComment, FaEdit, FaTrash, FaReply, FaPlus } from 'react-icons/fa';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/StoryPage.css';
 
 const StoryPage = () => {
     const { id } = useParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { user: currentUser } = useAuth();
     const [story, setStory] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,71 +17,113 @@ const StoryPage = () => {
     const [comments, setComments] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
+    const [showAddPartForm, setShowAddPartForm] = useState(false);
+    const [newPartContent, setNewPartContent] = useState('');
 
     useEffect(() => {
-        const fetchStory = async () => {
+        const fetchStoryData = async () => {
             try {
-                const response = await fetch(`http://localhost:5076/stories/${id}`);
-                if (!response.ok) throw new Error('Story not found');
-                const data = await response.json();
-                setStory(data);
-                setLikeCount(data.likeCount);
-                fetchComments();
-                checkIfLiked();
+                const token = localStorage.getItem('authToken');
+                const headers = token ? { Authorization: `Bearer ${token}` } : {};
+                
+                const [storyRes, commentsRes] = await Promise.all([
+                    fetch(`http://localhost:5076/stories/${id}`, { headers }),
+                    fetch(`http://localhost:5076/stories/${id}/comments`, { headers })
+                ]);
+
+                if (!storyRes.ok) throw new Error('Story not found');
+                if (!commentsRes.ok) throw new Error('Failed to load comments');
+
+                const storyData = await storyRes.json();
+                const commentsData = await commentsRes.json();
+
+                setStory(storyData);
+                setComments(commentsData);
+                setLikeCount(storyData.likeCount);
+
+                // Check if user liked the story if logged in
+                if (currentUser) {
+                    const likeRes = await fetch(`http://localhost:5076/stories/${id}/like/status`, { 
+                        headers: { Authorization: `Bearer ${token}` } 
+                    });
+                    if (likeRes.ok) {
+                        const likeData = await likeRes.json();
+                        setIsLiked(likeData.isLiked);
+                    }
+                }
             } catch (err) {
+                console.error('Error loading story:', err);
                 setError(err.message);
+                
+                if (err.response?.status === 401) {
+                    localStorage.removeItem('authToken');
+                    navigate('/login');
+                }
             } finally {
                 setLoading(false);
             }
         };
 
-        const fetchComments = async () => {
-            try {
-                const response = await fetch(`http://localhost:5076/stories/${id}/comments`);
-                if (!response.ok) throw new Error('Failed to load comments');
-                const data = await response.json();
-                setComments(data);
-            } catch (err) {
-                console.error('Error loading comments:', err);
-            }
-        };
+        fetchStoryData();
+    }, [id, currentUser, navigate]);
 
-        const checkIfLiked = async () => {
-            try {
-                const response = await fetch(`http://localhost:5076/stories/${id}/like/status`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    setIsLiked(data.isLiked);
-                }
-            } catch (err) {
-                console.error('Error checking like status:', err);
-            }
-        };
+    const handleAddPart = async (e) => {
+        e.preventDefault();
+        if (!newPartContent.trim()) return;
 
-        fetchStory();
-    }, [id]);
+        try {
+            const response = await fetch(`http://localhost:5076/stories/${id}/parts`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content: newPartContent })
+            });
+
+            if (!response.ok) throw new Error('Failed to add part');
+
+            const newPart = await response.json();
+            setStory(prev => ({
+                ...prev,
+                parts: [...prev.parts, newPart],
+                partsCount: prev.partsCount + 1
+            }));
+            setNewPartContent('');
+            setShowAddPartForm(false);
+        } catch (err) {
+            console.error('Error adding part:', err);
+            setError(err.message);
+        }
+    };
+
+    const handleEditStory = () => {
+        navigate(`/story/${id}/edit`);
+    };
 
     const handleLike = async () => {
+        if (!currentUser) {
+            navigate('/login');
+            return;
+        }
+
         try {
             const response = await fetch(`http://localhost:5076/stories/${id}/like`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                     'Content-Type': 'application/json'
                 }
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                setIsLiked(result.liked);
-                setLikeCount(prev => result.liked ? prev + 1 : prev - 1);
-            }
+            if (!response.ok) throw new Error('Failed to toggle like');
+
+            const result = await response.json();
+            setIsLiked(result.liked);
+            setLikeCount(prev => result.liked ? prev + 1 : prev - 1);
         } catch (err) {
             console.error('Error toggling like:', err);
+            setError(err.message);
         }
     };
 
@@ -91,34 +135,49 @@ const StoryPage = () => {
             const response = await fetch(`http://localhost:5076/stories/${id}/comments`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ content: commentText })
             });
 
-            if (response.ok) {
-                const newComment = await response.json();
-                setComments(prev => [newComment, ...prev]);
-                setCommentText('');
-                // Update comment count in story
-                setStory(prev => ({
-                    ...prev,
-                    commentCount: prev.commentCount + 1
-                }));
-            }
+            if (!response.ok) throw new Error('Failed to post comment');
+
+            const newComment = await response.json();
+            setComments(prev => [newComment, ...prev]);
+            setCommentText('');
+            setStory(prev => ({
+                ...prev,
+                commentCount: prev.commentCount + 1
+            }));
         } catch (err) {
             console.error('Error submitting comment:', err);
+            setError(err.message);
         }
     };
 
     if (loading) return <div className="loading">{t('Loading...')}</div>;
     if (error) return <div className="error">{error}</div>;
+    if (!story) return <div className="error">{t('Story not found')}</div>;
+
+    const isOwner = currentUser && story && currentUser.id === story.owner.id;
 
     return (
         <div className="story-page">
             <div className="story-header">
-                <h1 className="story-title">{story.title}</h1>
+                <div className="story-header-top">
+                    <h1 className="story-title">{story.title}</h1>
+                    {isOwner && (
+                        <button 
+                            onClick={handleEditStory}
+                            className="edit-story-button"
+                            title={t('Edit Story')}
+                        >
+                            <FaEdit />
+                        </button>
+                    )}
+                </div>
+                
                 <div className="story-meta">
                     <span className="meta-item">
                         {t('By')} <Link to={`/account/${story.owner.id}`} className="author-link">
@@ -161,13 +220,47 @@ const StoryPage = () => {
             </div>
             
             <div className="story-content">
-                <h2>{t('Story Parts')}</h2>
+                <div className="story-parts-header">
+                    <h2>{t('Story Parts')}</h2>
+                    {currentUser && (
+                        <button 
+                            onClick={() => setShowAddPartForm(!showAddPartForm)}
+                            className="add-part-button"
+                        >
+                            <FaPlus /> {t('Add Part')}
+                        </button>
+                    )}
+                </div>
+
+                {showAddPartForm && (
+                    <form onSubmit={handleAddPart} className="add-part-form">
+                        <textarea
+                            value={newPartContent}
+                            onChange={(e) => setNewPartContent(e.target.value)}
+                            placeholder={t('Write your part here...')}
+                            required
+                        />
+                        <div className="add-part-actions">
+                            <button type="submit" className="submit-part">
+                                {t('Submit Part')}
+                            </button>
+                            <button 
+                                type="button" 
+                                onClick={() => setShowAddPartForm(false)}
+                                className="cancel-add-part"
+                            >
+                                {t('Cancel')}
+                            </button>
+                        </div>
+                    </form>
+                )}
+
                 {story.parts && story.parts.length > 0 ? (
                     <div className="parts-container">
                         {story.parts.sort((a, b) => a.order - b.order).map(part => (
                             <div key={part.id} className="story-part">
                                 <div className="part-header">
-                                    <span className="part-order">{t('Part')} {part.order}</span>
+                                    <span className="part-order">Part {part.order}</span>
                                     <span className="part-author">
                                         {t('By')} {part.author.login}
                                     </span>
@@ -186,17 +279,23 @@ const StoryPage = () => {
             <div className="comments-section">
                 <h2>{t('Comments')} ({story.commentCount})</h2>
                 
-                <form onSubmit={handleCommentSubmit} className="comment-form">
-                    <textarea
-                        value={commentText}
-                        onChange={(e) => setCommentText(e.target.value)}
-                        placeholder={t('Write your comment here...')}
-                        required
-                    />
-                    <button type="submit" className="submit-comment">
-                        <FaComment /> {t('Post Comment')}
-                    </button>
-                </form>
+                {currentUser ? (
+                    <form onSubmit={handleCommentSubmit} className="comment-form">
+                        <textarea
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                            placeholder={t('Write your comment here...')}
+                            required
+                        />
+                        <button type="submit" className="submit-comment">
+                            <FaComment /> {t('Post Comment')}
+                        </button>
+                    </form>
+                ) : (
+                    <p className="login-prompt">
+                        {t('Please login to leave a comment')}
+                    </p>
+                )}
                 
                 <div className="comments-list">
                     {comments.length > 0 ? (

@@ -346,3 +346,104 @@
         height: 300px;
     }
 }
+/* Story Header Top Section */
+.story-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.edit-story-button {
+    background: none;
+    border: none;
+    color: var(--border-color-hover);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.edit-story-button:hover {
+    color: var(--border-color-focus);
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1.1);
+}
+
+/* Story Parts Header */
+.story-parts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.add-part-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--header-bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-part-button:hover {
+    background-color: var(--border-color);
+}
+
+/* Add Part Form */
+.add-part-form {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--header-bg-color);
+}
+
+.add-part-form textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    resize: vertical;
+    font-size: 1rem;
+}
+
+.add-part-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.submit-part, .cancel-add-part {
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.submit-part {
+    background-color: var(--border-color-focus);
+    color: white;
+}
+
+.submit-part:hover {
+    background-color: var(--border-color-active);
+}
+
+.cancel-add-part {
+    background-color: var(--header-bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.cancel-add-part:hover {
+    background-color: var(--border-color);
+}
