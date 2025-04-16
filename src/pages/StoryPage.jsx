@@ -167,7 +167,7 @@ const StoryPage = () => {
                         {story.parts.sort((a, b) => a.order - b.order).map(part => (
                             <div key={part.id} className="story-part">
                                 <div className="part-header">
-                                    <span className="part-order">Part {part.order}</span>
+                                    <span className="part-order">{t('Part')} {part.order}</span>
                                     <span className="part-author">
                                         {t('By')} {part.author.login}
                                     </span>

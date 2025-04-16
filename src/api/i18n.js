@@ -88,6 +88,14 @@ const resources = {
         "Your Stories": "Your Stories",
         "By": "By",
         "parts": "parts",
+
+        "Story Parts": "Story Parts",
+        "Comments": "Comments",
+        "No comments yet": "No comments yet",
+        "Post Comment": "Post Comment",
+        "Part": "Part",
+        "Write your comment here...": "Write your comment here...",
+        "": "",
       }
     },
     be: {
@@ -176,6 +184,14 @@ const resources = {
         "Your Stories": "Вашыя апавяданні",
         "By": "Ад",
         "parts": "частак",
+
+        "Story Parts": "Часткі апавядання",
+        "Comments": "Каментарыі",
+        "No comments yet": "Пакуль няма каментарыяў",
+        "Post Comment": "Апублікаваць каментарый",
+        "Part": "Частка",
+        "Write your comment here...": "Напішыце сюды свой каментарый...",
+        "": "",
       }
     }
   };
