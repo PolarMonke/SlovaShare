@@ -1,4 +1,3 @@
-// pages/AccountPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -16,6 +15,24 @@ const AccountPage = () => {
     const [userStories, setUserStories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const profilePlaceholder = isDarkMode 
+        ? '/img/profile-placeholder-dark.png' 
+        : '/img/profile-placeholder-light.png';
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        setIsDarkMode(savedTheme === 'dark');
+
+        const handleStorageChange = () => {
+            const currentTheme = localStorage.getItem('theme');
+            setIsDarkMode(currentTheme === 'dark');
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -83,9 +100,12 @@ const AccountPage = () => {
         <div className="account-container">
             <div className="profile-header">
                 <img 
-                    src={profileData.profileImage || '/img/default.png'} 
+                    src={profileData.profileImage || profilePlaceholder} 
                     alt="Profile" 
                     className="profile-image"
+                    onError={(e) => {
+                        e.target.src = profilePlaceholder;
+                    }}
                 />
                 <h1>{profileData.login}</h1>
                 {profileData.isCurrentUser && <span className="profile-badge">({t('You')})</span>}

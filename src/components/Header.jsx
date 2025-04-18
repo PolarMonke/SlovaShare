@@ -15,6 +15,11 @@ export default function Header() {
         const savedTheme = localStorage.getItem('theme');
         return savedTheme === 'dark';
     });
+
+    const profilePlaceholder = isDarkMode 
+        ? '/img/profile-placeholder-dark.png' 
+        : '/img/profile-placeholder-light.png';
+
     const toggleTheme = () => {
         const newTheme = !isDarkMode;
         setIsDarkMode(newTheme);
@@ -95,17 +100,21 @@ export default function Header() {
                     <div className="profile">
                         {user ? (
                             <Link to={`/account/${user.id}`}>
-                                {/* Show profile image if exists, otherwise default icon */}
                                 {user.profileImage ? (
                                     <img 
                                         src={user.profileImage} 
                                         alt="Profile" 
                                         className="profile-picture"
+                                        onError={(e) => {
+                                            e.target.src = profilePlaceholder;
+                                        }}
                                     />
                                 ) : (
-                                    <div className="profile-initial">
-                                        {user.login.charAt(0).toUpperCase()}
-                                    </div>
+                                    <img 
+                                        src={profilePlaceholder} 
+                                        alt="Default Profile" 
+                                        className="profile-picture"
+                                    />
                                 )}
                             </Link>
                         ) : (

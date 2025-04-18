@@ -3,27 +3,47 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FaHeart, FaComment } from 'react-icons/fa';
 import '../styles/StoryCard.css';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const StoryCard = ({ story }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        setIsDarkMode(savedTheme === 'dark');
+        
+        const handleStorageChange = () => {
+            const currentTheme = localStorage.getItem('theme');
+            setIsDarkMode(currentTheme === 'dark');
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
 
     const handleCardClick = () => {
         navigate(`/story/${story.id}`);
     };
 
+    const placeholderImage = isDarkMode 
+        ? '/img/cover-placeholder-dark.png' 
+        : '/img/cover-placeholder-light.png';
+
     return (
         <div className="story-card" onClick={handleCardClick}>
             <Link to={`/story/${story.id}`} className="story-link">
-                {story.coverImageUrl && (
-                    <div className="story-cover">
-                        <img 
-                            src={story.coverImageUrl} 
-                            alt={story.title} 
-                            className="cover-image"
-                        />
-                    </div>
-                )}
+                <div className="story-cover">
+                    <img 
+                        src={story.coverImageUrl || placeholderImage} 
+                        alt={story.title} 
+                        className="cover-image"
+                        onError={(e) => {
+                            e.target.src = placeholderImage;
+                        }}
+                    />
+                </div>
                 <div className="story-content">
                     <h3 className="story-title">{story.title}</h3>
                     <p className="story-description">{story.description || t('No description available')}</p>
