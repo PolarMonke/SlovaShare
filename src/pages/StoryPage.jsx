@@ -17,6 +17,7 @@ const StoryPage = () => {
     const [comments, setComments] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
+    const [commentCount, setCommentCount] = useState(0);
     const [showAddPartForm, setShowAddPartForm] = useState(false);
     const [newPartContent, setNewPartContent] = useState('');
 
@@ -39,16 +40,20 @@ const StoryPage = () => {
 
                 setStory(storyData);
                 setComments(commentsData);
-                setLikeCount(storyData.likeCount);
+                setLikeCount(storyData.likeCount || 0);
+                setCommentCount(storyData.commentCount || commentsData.length || 0);
 
-                // Check if user liked the story if logged in
-                if (currentUser) {
-                    const likeRes = await fetch(`http://localhost:5076/stories/${id}/like/status`, { 
-                        headers: { Authorization: `Bearer ${token}` } 
-                    });
-                    if (likeRes.ok) {
-                        const likeData = await likeRes.json();
-                        setIsLiked(likeData.isLiked);
+                if (currentUser && token) {
+                    try {
+                        const likeRes = await fetch(`http://localhost:5076/stories/${id}/like/status`, { 
+                            headers: { Authorization: `Bearer ${token}` } 
+                        });
+                        if (likeRes.ok) {
+                            const likeData = await likeRes.json();
+                            setIsLiked(likeData.isLiked);
+                        }
+                    } catch (err) {
+                        console.error('Error checking like status:', err);
                     }
                 }
             } catch (err) {
@@ -107,6 +112,12 @@ const StoryPage = () => {
             return;
         }
 
+        const oldIsLiked = isLiked;
+        const oldLikeCount = likeCount;
+
+        setIsLiked(!oldIsLiked);
+        setLikeCount(oldIsLiked ? Math.max(0, oldLikeCount - 1) : oldLikeCount + 1);
+
         try {
             const response = await fetch(`http://localhost:5076/stories/${id}/like`, {
                 method: 'POST',
@@ -119,11 +130,15 @@ const StoryPage = () => {
             if (!response.ok) throw new Error('Failed to toggle like');
 
             const result = await response.json();
-            setIsLiked(result.liked);
-            setLikeCount(prev => result.liked ? prev + 1 : prev - 1);
+            if (result.liked !== !oldIsLiked) {
+                setIsLiked(result.liked);
+                setLikeCount(result.liked ? oldLikeCount + 1 : Math.max(0, oldLikeCount - 1));
+            }
         } catch (err) {
             console.error('Error toggling like:', err);
             setError(err.message);
+            setIsLiked(oldIsLiked);
+            setLikeCount(oldLikeCount);
         }
     };
 
@@ -146,6 +161,7 @@ const StoryPage = () => {
             const newComment = await response.json();
             setComments(prev => [newComment, ...prev]);
             setCommentText('');
+            setCommentCount(prev => prev + 1);
             setStory(prev => ({
                 ...prev,
                 commentCount: prev.commentCount + 1

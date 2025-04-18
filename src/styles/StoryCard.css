@@ -24,18 +24,20 @@ div .story-cover {
     overflow: hidden;
     margin: 0rem;
     border-radius: 0px;
-    box-shadow: 0;
+    box-shadow: none;
 }
 
 .cover-image {
     max-width: 100%;
     max-width: 100%;
     object-fit: cover;
+    box-shadow: none;
 }
 
 div .story-content {
     padding: 1rem;
     margin: 0rem;
+
 }
 
 .story-title {
