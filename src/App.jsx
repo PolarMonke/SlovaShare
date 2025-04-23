@@ -11,6 +11,7 @@ import NewStoryForm from "./pages/NewStoryForm";
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import StoryPage from './pages/StoryPage';
 import EditStoryPage from './pages/EditStoryPage';
+import SearchResultsPage from './pages/SearchResultsPage';
 
 
 function AppContent() {
@@ -37,6 +38,7 @@ function AppContent() {
           <Route path="/story/:id" element={<StoryPage/>}/>
           <Route path="/story/new" element={<NewStoryForm/>}/>
           <Route path="/story/:id/edit" element={<EditStoryPage/>}/>
+          <Route path="/search" element={<SearchResultsPage />} />
         </Route>
         
         {/* Catch-all route */}

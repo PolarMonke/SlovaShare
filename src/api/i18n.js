@@ -111,6 +111,11 @@ const resources = {
 
         "Edit Story": "Edit Story",
         "": "",
+
+        "Search Results": "Search Results",
+        "No results found": "No results found",
+        "Previous": "Previous",
+        "Next": "Next",
       }
     },
     be: {
@@ -223,6 +228,12 @@ const resources = {
         "Submit Part": "Апублікаваць",
 
         "Edit Story": "Рэдагаванне апавядання",
+
+        "Search Results": "Рэзультаты пошуку",
+        "No results found": "Нічога не знойдзена",
+        "Previous": "Мінулая",
+        "Next": "Наступная",
+
         "": "",
 
       }

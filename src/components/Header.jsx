@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import '../api/i18n';
@@ -10,6 +10,8 @@ export default function Header() {
     const { user } = useAuth();
     const { t, i18n } = useTranslation();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     const [isDarkMode, setIsDarkMode] = useState(() => {
         const savedTheme = localStorage.getItem('theme');
@@ -48,9 +50,23 @@ export default function Header() {
                 <Link className="logo" to="/">SlovaShare</Link>
                 </div>
                 <div className="search-area">
-                    <input className='search-bar' placeholder={t('Search Placeholder')}></input>
-                    <button className='search-button'><FiSearch className="icon"/></button>
-                    <button className='filter-button'><FiSliders className="icon"/></button>
+                    <input 
+                        className='search-bar' 
+                        placeholder={t('Search Placeholder')}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                                navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+                            }
+                        }}
+                    />
+                    <button 
+                        className='search-button'
+                        onClick={() => navigate(`/search?q=${encodeURIComponent(searchQuery)}`)}
+                    >
+                        <FiSearch className="icon"/>
+                    </button>
                 </div>
                 <div className='right-container'>
                 {user && (
