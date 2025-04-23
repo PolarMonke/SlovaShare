@@ -139,7 +139,7 @@ const EditStoryPage = () => {
         if (!window.confirm(t('Are you sure you want to delete this part?'))) return;
         
         try {
-            const response = await fetch(`http://localhost:5076/stories/${id}/parts/${partId}`, {
+            const response = await fetch(`http://localhost:5076/stories/${id}/storyparts/${partId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
@@ -186,7 +186,7 @@ const EditStoryPage = () => {
     const saveOrder = async () => {
         try {
             const partIds = story.parts.map(p => p.id);
-            const response = await fetch(`http://localhost:5076/stories/${id}/parts/order`, {
+            const response = await fetch(`http://localhost:5076/stories/${id}/storyparts/order`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -6,6 +6,8 @@ const resources = {
     en: {
       translation: {
         "Search Placeholder": "Search...",
+        "Loading...": "Loading...",
+        "Loading Stories...": "Loading Stories...",
 
         "All rights reserved": "All rights stolen by MCB",
 
@@ -88,6 +90,7 @@ const resources = {
         "Your Stories": "Your Stories",
         "By": "By",
         "parts": "parts",
+        "No description available": "No description available",
 
         "Story Parts": "Story Parts",
         "Comments": "Comments",
@@ -95,6 +98,7 @@ const resources = {
         "Post Comment": "Post Comment",
         "Part": "Part",
         "Write your comment here...": "Write your comment here...",
+        "Reply": "Reply",
         "Add Part": "Add Part",
         "Write your part here...": "Write your part here...",
         "Submit Part": "Submit Part",
@@ -106,6 +110,9 @@ const resources = {
     be: {
       translation: {
         "Search Placeholder": "Пошук...",
+        "Loading...": "Загрузка...",
+        "Loading Stories...": "Загрузка апавяданняў...",
+
 
         "All rights reserved": "Усе правы скраў МКП",
         
@@ -189,6 +196,7 @@ const resources = {
         "Your Stories": "Вашыя апавяданні",
         "By": "Ад",
         "parts": "частак",
+        "No description available": "Без апісання", 
 
         "Story Parts": "Часткі апавядання",
         "Comments": "Каментарыі",
@@ -196,6 +204,7 @@ const resources = {
         "Post Comment": "Апублікаваць каментарый",
         "Part": "Частка",
         "Write your comment here...": "Напішыце сюды свой каментарый...",
+        "Reply": "Адказаць",
         "Add Part": "Дадаць частку",
         "Write your part here...": "Напішыце сваю частку...",
         "Submit Part": "Апублікаваць",

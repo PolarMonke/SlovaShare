@@ -45,7 +45,7 @@ const StoryPage = () => {
 
                 if (currentUser && token) {
                     try {
-                        const likeRes = await fetch(`http://localhost:5076/stories/${id}/like/status`, { 
+                        const likeRes = await fetch(`http://localhost:5076/stories/${id}/likes/status`, { 
                             headers: { Authorization: `Bearer ${token}` } 
                         });
                         if (likeRes.ok) {
@@ -75,20 +75,34 @@ const StoryPage = () => {
     const handleAddPart = async (e) => {
         e.preventDefault();
         if (!newPartContent.trim()) return;
-
+    
         try {
-            const response = await fetch(`http://localhost:5076/stories/${id}/parts`, {
+            console.log("Sending part content:", newPartContent);
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                throw new Error('No authentication token found');
+            }
+    
+            const response = await fetch(`http://localhost:5076/stories/${id}/storyparts`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ content: newPartContent })
+                body: JSON.stringify({ content: newPartContent.trim() })
             });
-
-            if (!response.ok) throw new Error('Failed to add part');
-
+    
+            console.log("Response status:", response.status); // Debug log
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error("Error details:", errorData); // Debug log
+                throw new Error(errorData.message || 'Failed to add part');
+            }
+    
             const newPart = await response.json();
+            console.log("New part created:", newPart); // Debug log
+            
             setStory(prev => ({
                 ...prev,
                 parts: [...prev.parts, newPart],
@@ -98,7 +112,7 @@ const StoryPage = () => {
             setShowAddPartForm(false);
         } catch (err) {
             console.error('Error adding part:', err);
-            setError(err.message);
+            setError(err.message || 'Failed to add part. Please try again.');
         }
     };
 
@@ -119,22 +133,23 @@ const StoryPage = () => {
         setLikeCount(oldIsLiked ? Math.max(0, oldLikeCount - 1) : oldLikeCount + 1);
 
         try {
-            const response = await fetch(`http://localhost:5076/stories/${id}/like`, {
+            const response = await fetch(`http://localhost:5076/stories/${id}/likes`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
                     'Content-Type': 'application/json'
                 }
             });
-
-            if (!response.ok) throw new Error('Failed to toggle like');
-
-            const result = await response.json();
-            if (result.liked !== !oldIsLiked) {
-                setIsLiked(result.liked);
-                setLikeCount(result.liked ? oldLikeCount + 1 : Math.max(0, oldLikeCount - 1));
+            if (response.ok) {
+                setIsLiked(!oldIsLiked);
+                setLikeCount(oldIsLiked ? Math.max(0, oldLikeCount - 1) : oldLikeCount + 1);
             }
-        } catch (err) {
+            if (!response.ok) 
+            {    
+                throw new Error('Failed to toggle like');
+            }
+        }
+        catch (err) {
             console.error('Error toggling like:', err);
             setError(err.message);
             setIsLiked(oldIsLiked);

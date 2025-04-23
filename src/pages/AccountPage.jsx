@@ -48,7 +48,7 @@ const AccountPage = () => {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`
                         }
                     }),
-                    axios.get(`http://localhost:5076/stories/user/${profileId}`, {
+                    axios.get(`http://localhost:5076/userstories/${profileId}`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`
                         }
