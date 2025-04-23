@@ -13,6 +13,7 @@ const AccountPage = () => {
     const navigate = useNavigate();
     const [profileData, setProfileData] = useState(null);
     const [userStories, setUserStories] = useState([]);
+    const [userContributions, setUserContributions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -42,7 +43,7 @@ const AccountPage = () => {
                     throw new Error('No user ID specified');
                 }
 
-                const [profileRes, storiesRes] = await Promise.all([
+                const [profileRes, storiesRes, contributionsRes] = await Promise.all([
                     axios.get(`http://localhost:5076/users/${profileId}/profile`, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -52,11 +53,17 @@ const AccountPage = () => {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem('authToken')}`
                         }
+                    }),
+                    axios.get(`http://localhost:5076/userstories/${profileId}/contributions`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                        }
                     })
                 ]);
 
                 setProfileData(profileRes.data);
                 setUserStories(storiesRes.data);
+                setUserContributions(contributionsRes.data);
             }
             catch (err) {
                 console.error('Profile load error:', err);
@@ -153,6 +160,18 @@ const AccountPage = () => {
                         ))
                     ) : (
                         <p className="no-stories">{t('No stories published yet')}</p>
+                    )}
+                </div>
+            </div>
+            <div className="user-stories">
+                <h2>{profileData.isCurrentUser ? t('Your Contributions') : t('Contributions')}</h2>
+                <div className="stories-grid">
+                    {userContributions.length > 0 ? (
+                        userContributions.map(story => (
+                            <StoryCard key={story.id} story={story} />
+                        ))
+                    ) : (
+                        <p className="no-stories">{t('No stories contributed yet')}</p>
                     )}
                 </div>
             </div>

@@ -20,6 +20,11 @@ const resources = {
         "Likes Received": "Likes Recieved",
         "Edit Profile": "Edit Profile",
         "Log Out": "Log Out",
+        "Your Contributions":"Your Contributions",
+        "Contributions":"Contributions",
+        "Published Stories": "Published Stories",
+        "No stories published yet": "No stories published yet",
+        "No stories contributed yet": "No stories contributed yet",
 
         "Username": "Username",
         "Email": "Email",
@@ -126,6 +131,12 @@ const resources = {
         "Likes Received": "Атрыманыя лайкі",
         "Edit Profile": "Рэдагаваць профіль",
         "Log Out": "Выйсці",
+        "Your Contributions":"Вашыя ўклады",
+        "Contributions":"Уклады",
+        "Published Stories": "Апавяданні",
+        "No stories published yet": "Няма апублікаваных апавяданняў",
+        "No stories contributed yet": "Няма ўкладаў у апавяданні",
+        
 
         "Username": "Імя",
         "Email": "Электронная пошта",
