@@ -187,6 +187,36 @@ const StoryPage = () => {
         }
     };
 
+    const handleDeleteComment = async (commentId) => {
+        if (!currentUser) return;
+        
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await fetch(`http://localhost:5076/stories/${id}/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to delete comment');
+            }
+    
+            setComments(prev => prev.filter(c => c.id !== commentId));
+            setCommentCount(prev => prev - 1);
+            
+            setStory(prev => prev ? {
+                ...prev,
+                commentCount: prev.commentCount - 1
+            } : prev);
+            
+        } catch (err) {
+            console.error('Error deleting comment:', err);
+            setError(err.message);
+        }
+    };
+
     if (loading) return <div className="loading">{t('Loading...')}</div>;
     if (error) return <div className="error">{error}</div>;
     if (!story) return <div className="error">{t('Story not found')}</div>;
@@ -347,6 +377,14 @@ const StoryPage = () => {
                                     <button className="reply-button">
                                         <FaReply /> {t('Reply')}
                                     </button>
+                                    {(currentUser?.id === comment.author.id || isOwner) && (
+                                        <button 
+                                            className="delete-comment-button"
+                                            onClick={() => handleDeleteComment(comment.id)}
+                                        >
+                                            {t('Delete')}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))

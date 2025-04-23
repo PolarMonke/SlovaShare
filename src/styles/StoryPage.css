@@ -508,3 +508,28 @@ div .story-cover {
         justify-content: center;
     }
 }
+
+.delete-comment-button {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+    margin-left: 1rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.delete-comment-button:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+}
+
+.comment-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}

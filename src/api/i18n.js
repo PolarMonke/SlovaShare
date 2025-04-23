@@ -94,6 +94,7 @@ const resources = {
 
         "Story Parts": "Story Parts",
         "Comments": "Comments",
+        "Delete": "Delete",
         "No comments yet": "No comments yet",
         "Post Comment": "Post Comment",
         "Part": "Part",
@@ -200,6 +201,7 @@ const resources = {
 
         "Story Parts": "Часткі апавядання",
         "Comments": "Каментарыі",
+        "Delete": "Выдаліць",
         "No comments yet": "Пакуль няма каментарыяў",
         "Post Comment": "Апублікаваць каментарый",
         "Part": "Частка",
