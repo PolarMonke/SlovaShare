@@ -5,6 +5,7 @@ import StoryCard from '../components/StoryCard';
 import '../styles/AccountPage.css';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
+import Calendar from '../components/Calendar';
 
 const AccountPage = () => {
     const { t } = useTranslation();
@@ -131,6 +132,7 @@ const AccountPage = () => {
                         <li>{t('Stories Contributed')}: {profileData.storiesContributed || 0}</li>
                         <li>{t('Likes Received')}: {profileData.likesReceived || 0}</li>
                     </ul>
+                    <Calendar userId={id || currentUser?.id}/>
                 </div>
 
                 {profileData.isCurrentUser && (
