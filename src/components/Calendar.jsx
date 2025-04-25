@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import '../styles/Calendar.css';
+import { useTranslation } from 'react-i18next';
 
 const Calendar = ({ userId }) => {
+    const { t } = useTranslation();
     const [contributions, setContributions] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,7 +17,7 @@ const Calendar = ({ userId }) => {
                 ]);
 
                 if (!storiesRes.ok || !contributionsRes.ok) {
-                    throw new Error('Failed to fetch data');
+                    throw new Error(`HTTP error! Status: ${storiesRes.status}/${contributionsRes.status}`);
                 }
 
                 const [stories, contributions] = await Promise.all([
@@ -23,13 +25,16 @@ const Calendar = ({ userId }) => {
                     contributionsRes.json()
                 ]);
 
-                const contributionData = processContributions([...stories, ...contributions]);
+                console.log("Raw API data:", { stories, contributions });
+                
+                // Process both stories and contributions (story parts)
+                const contributionData = processContributions(stories, contributions);
+                console.log("Processed data:", contributionData);
                 setContributions(contributionData);
-            }
-            catch (err) {
+            } catch (err) {
+                console.error("Fetch error:", err);
                 setError(err.message);
-            }
-            finally {
+            } finally {
                 setLoading(false);
             }
         };
@@ -47,26 +52,34 @@ const Calendar = ({ userId }) => {
     const normalizeDate = (dateString) => {
         if (!isValidDate(dateString)) return null;
         const date = new Date(dateString);
-        return new Date(Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate()
-        )).toISOString().split('T')[0];
+        return date.toISOString().split('T')[0];
     };
     
-    const processContributions = (stories) => {
+    const processContributions = (stories, storyParts) => {
         const data = {};
         
         stories.forEach(story => {
-            // Process creation date
-            const createdDate = normalizeDate(story.CreatedAt);
+            const createdDate = normalizeDate(story.createdAt);
             if (createdDate) {
                 data[createdDate] = (data[createdDate] || 0) + 1;
             }
+            
+            if (story.updatedAt && story.updatedAt !== story.createdAt) {
+                const updatedDate = normalizeDate(story.updatedAt);
+                if (updatedDate && updatedDate !== createdDate) {
+                    data[updatedDate] = (data[updatedDate] || 0) + 1;
+                }
+            }
+        });
 
-            // Process update date if different
-            if (story.UpdatedAt && story.UpdatedAt !== story.CreatedAt) {
-                const updatedDate = normalizeDate(story.UpdatedAt);
+        storyParts.forEach(part => {
+            const createdDate = normalizeDate(part.createdAt);
+            if (createdDate) {
+                data[createdDate] = (data[createdDate] || 0) + 1;
+            }
+            
+            if (part.updatedAt && part.updatedAt !== part.createdAt) {
+                const updatedDate = normalizeDate(part.updatedAt);
                 if (updatedDate && updatedDate !== createdDate) {
                     data[updatedDate] = (data[updatedDate] || 0) + 1;
                 }
@@ -79,14 +92,17 @@ const Calendar = ({ userId }) => {
         const weeks = [];
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        const todayString = today.toISOString().split('T')[0]; // Get today's date string once
         
+        // Calculate the start date (Sunday of the week 51 weeks ago)
         const startDate = new Date(today);
-        startDate.setDate(today.getDate() - today.getDay() - 51 * 7);
+        startDate.setDate(today.getDate() - (51 * 7) - today.getDay());
         startDate.setHours(0, 0, 0, 0);
-
+    
         const monthChanges = [];
         let currentMonth = startDate.getMonth();
         
+        // Find month changes
         for (let week = 0; week < 52; week++) {
             const weekDate = new Date(startDate);
             weekDate.setDate(startDate.getDate() + week * 7);
@@ -100,7 +116,8 @@ const Calendar = ({ userId }) => {
                 currentMonth = weekMonth;
             }
         }
-
+    
+        // Generate grid data
         for (let week = 0; week < 52; week++) {
             const weekDays = [];
             
@@ -121,7 +138,8 @@ const Calendar = ({ userId }) => {
                     date: dateString,
                     count,
                     colorLevel,
-                    isToday: dateString === today.toISOString().split('T')[0]
+                    isToday: dateString === todayString,  // Compare with pre-computed todayString
+                    dayOfWeek: day
                 });
             }
             
@@ -132,23 +150,24 @@ const Calendar = ({ userId }) => {
     };
 
     const { weeks, monthChanges } = generateCalendarData();
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const monthNames = [t('Jan'), t('Feb'), t('Mar'), t('Apr'), t('May'), t('Jun'), t('Jul'), t('Aug'), t('Sep'), t('Oct'), t('Nov'), t('Dec')];
+    //const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     if (loading) return <div className="calendar-loading">Loading...</div>;
     if (error) return <div className="calendar-error">Error: {error}</div>;
 
     return (
+        <div className='calendar-container'>
         <div className="compact-calendar">
             <div className="calendar-header">
-                <h4>Story Contributions</h4>
+                <h4>{t('Story Contributions')}</h4>
                 <div className="color-scale">
-                    <span>Less</span>
+                    <span>{t('Less')}</span>
                     <div className="color-box level-0"></div>
                     <div className="color-box level-1"></div>
                     <div className="color-box level-2"></div>
                     <div className="color-box level-3"></div>
                     <div className="color-box level-4"></div>
-                    <span>More</span>
+                    <span>{t('More')}</span>
                 </div>
             </div>
             
@@ -166,12 +185,12 @@ const Calendar = ({ userId }) => {
                     ))}
                 </div>
 
-                {/* Weekday labels */}
+                {/* Weekday labels
                 <div className="day-labels">
                     {dayNames.map((day, i) => (
                         <div key={i} className="day-label">{day}</div>
                     ))}
-                </div>
+                </div> */}
                 
                 {/* Contribution grid */}
                 <div className="contribution-grid">
@@ -188,6 +207,7 @@ const Calendar = ({ userId }) => {
                     ))}
                 </div>
             </div>
+        </div>
         </div>
     );
 }

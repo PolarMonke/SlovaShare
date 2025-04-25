@@ -116,6 +116,11 @@ const resources = {
         "No results found": "No results found",
         "Previous": "Previous",
         "Next": "Next",
+
+        "Story Contributions": "Story Contributions",
+        "Jan": "Jan","Feb": "Feb","Mar": "Mar","Apr": "Apr","May": "May","Jun": "Jun","Jul": "Jul","Aug": "Aug","Sep": "Sep","Oct": "Oct","Nov": "Nov","Dec": "Dec",
+        "Less": "Less","More": "More",
+
       }
     },
     be: {
@@ -235,6 +240,10 @@ const resources = {
         "Next": "Наступная",
 
         "": "",
+
+        "Story Contributions": "Актыўнасць",
+        "Jan": "Сту","Feb": "Лют","Mar": "Сак","Apr": "Кра","May": "Тра","Jun": "Чэр","Jul": "Ліп","Aug": "Жні","Sep": "Вер","Oct": "Кас","Nov": "Ліс","Dec": "Сне",
+        "Less": "Менш","More": "Больш",
 
       }
     }
