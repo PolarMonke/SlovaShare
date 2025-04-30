@@ -71,6 +71,7 @@ const AccountPage = () => {
                 setError(err.response?.data?.message || err.message || 'Failed to load profile');
                 
                 if (err.response?.status === 401) {
+                    console.log("redirections")
                     localStorage.removeItem('authToken');
                     navigate('/login');
                 }
@@ -82,12 +83,7 @@ const AccountPage = () => {
             }
         };
 
-        if (currentUser || localStorage.getItem('authToken')) {
-            fetchProfileData();
-        }
-        else {
-            navigate('/login');
-        }
+        fetchProfileData();
     }, [id, currentUser, navigate]);
 
     const handleLogout = async () => {

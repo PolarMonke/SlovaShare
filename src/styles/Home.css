@@ -9,6 +9,7 @@
     color: var(--text-color);
     margin-bottom: 2rem;
     text-align: center;
+    margin-top: 0;
 }
 
 .stories-grid {
