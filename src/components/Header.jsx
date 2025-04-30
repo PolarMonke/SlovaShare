@@ -106,13 +106,13 @@ export default function Header() {
                         </div>
                     )}
                 </div>
-                    <div className="theme-toggle" onClick={toggleTheme}>
+                    <button className="theme-toggle" onClick={toggleTheme}>
                     {isDarkMode ? (
                         <FiSun className="icon"/>
                         ) : (
                         <FiMoon className="icon"/>
                     )}
-                    </div>
+                    </button>
                     <div className="profile">
                         {user ? (
                             <Link to={`/account/${user.id}`}>

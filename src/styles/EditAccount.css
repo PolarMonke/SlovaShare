@@ -77,7 +77,6 @@
 }
 
 .save-button {
-    background-color: var(--header-bg-color);
     color: var(--text-color);
     border: 2px solid var(--border-color);
 }
@@ -95,7 +94,6 @@
 
 .cancel-button:hover {
     border-color: var(--border-color-hover);
-    background-color: var(--header-bg-color);
 }
 
 .loading {

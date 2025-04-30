@@ -110,7 +110,7 @@ const resources = {
         "Submit Part": "Submit Part",
 
         "Edit Story": "Edit Story",
-        "": "",
+        "Save Order": "Save Order",
 
         "Search Results": "Search Results",
         "No results found": "No results found",
@@ -233,6 +233,7 @@ const resources = {
         "Submit Part": "Апублікаваць",
 
         "Edit Story": "Рэдагаванне апавядання",
+        "Save Order": "Захаваць парадак",
 
         "Search Results": "Рэзультаты пошуку",
         "No results found": "Нічога не знойдзена",

@@ -10,11 +10,9 @@
 .edit-story-container {
     width: 100%;
     max-width: 800px;
-    background-color: var(--header-bg-color);
-    border-radius: 12px;
+    border-radius: 2rem;
     border: 2px solid var(--border-color);
     padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .edit-story-title {
@@ -439,7 +437,7 @@
 }
 
 .toggle-input:checked + .toggle-slider {
-    background-color: var(--border-color-focus);
+    background-color: var(--border-color-hover);
 }
 
 .toggle-input:checked + .toggle-slider:before {
