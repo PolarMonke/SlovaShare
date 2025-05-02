@@ -22,6 +22,7 @@ export default function LogIn() {
     });
     const [apiError, setApiError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isSendingCode, setIsSendingCode] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -49,18 +50,11 @@ export default function LogIn() {
     };
 
     const handleRegister = async () => {
-        console.log("Submitting:", { username, email, password, code });
-      
-        if (!username.trim() || !email.trim() || !password.trim()) {
-            setApiError(t('register.allFieldsRequired'));
-            return;
-        }
-    
         if (!isCodeSent) {
             await handleSendCode();
             return;
         }
-    
+
         try {
             const response = await axios.post('http://localhost:5076/users/register', 
                 {
@@ -76,7 +70,7 @@ export default function LogIn() {
                     withCredentials: true
                 }
             );
-    
+
             console.log('Registration successful:', response.data);
             alert(t('register.success'));
             resetForm();
@@ -94,6 +88,9 @@ export default function LogIn() {
                     setErrors(newErrors);
                 } else if (errorData.field === 'email') {
                     setApiError(t('register.emailInUse'));
+                } else if (errorData.field === 'code') {
+                    setApiError(t('register.invalidCode'));
+                    setErrors(prev => ({...prev, code: t('register.invalidCode')}));
                 } else if (errorData.message) {
                     setApiError(errorData.message);
                 } else {
@@ -111,7 +108,6 @@ export default function LogIn() {
                 login: username, 
                 password: password 
             });
-            // const userData = await login(credentials);
 
             console.log('Login successful:', userData);
             await loadUser();
@@ -139,14 +135,37 @@ export default function LogIn() {
     };
 
     const handleSendCode = async () => {
-        // Mock implementation - replace with actual API call
-        const mockCode = Math.floor(1000 + Math.random() * 9000);
-        setCode(mockCode.toString());
-        alert(`Verification code sent to ${email}\nDemo code: ${mockCode}`);
-        setIsCodeSent(true);
-        
-        // In production:
-        // await axios.post('https://your-api.com/users/send-verification', { email });
+        if (!email.trim()) {
+            setErrors(prev => ({...prev, email: t('Email is required')}));
+            return;
+        }
+    
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+            setErrors(prev => ({...prev, email: t('Invalid email format')}));
+            return;
+        }
+    
+        setIsSendingCode(true);
+        setApiError('');
+    
+        try {
+            const response = await axios.post('http://localhost:5076/confirmation/send-code', { 
+                email: email 
+            });
+    
+            setIsCodeSent(true);
+            setApiError(t(response.data.Code || ''));
+        } catch (error) {
+            console.error('Error sending verification code:', error);
+            const errorCode = error.response?.data?.Code || 'register.sendCodeFailed';
+            setApiError(t(errorCode));
+            
+            if (error.response?.data?.Error) {
+                console.error('Server error details:', error.response.data.Error);
+            }
+        } finally {
+            setIsSendingCode(false);
+        }
     };
 
     const validateForm = () => {
@@ -247,20 +266,43 @@ export default function LogIn() {
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
                                 className="login-input"
+                                placeholder="Enter 6-digit code"
+                                maxLength={6}
                               />
                               {errors.code && <div className="error">{errors.code}</div>}
                           </div>
                       )}
 
-                      <button
-                          type="button"
-                          onClick={isCodeSent ? handleSubmit : handleSendCode}
-                          className="login-button"
-                          disabled={isLoading}
-                      >
-                        {isLoading ? t('Processing...') : 
-                        isCodeSent ? t('Complete Registration') : t('Send Verification Code')}
-                      </button>
+                      <div className="button-group">
+                          {isCodeSent ? (
+                              <>
+                                <button
+                                    type="submit"
+                                    className="login-button"
+                                    disabled={isLoading}
+                                >
+                                  {isLoading ? t('Processing...') : t('Complete Registration')}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleSendCode}
+                                    className="login-button secondary-button"
+                                    disabled={isSendingCode}
+                                >
+                                  {isSendingCode ? t('Resending...') : t('Resend Code')}
+                                </button>
+                              </>
+                          ) : (
+                              <button
+                                  type="button"
+                                  onClick={handleSendCode}
+                                  className="login-button"
+                                  disabled={isSendingCode}
+                              >
+                                {isSendingCode ? t('Sending...') : t('Send Verification Code')}
+                              </button>
+                          )}
+                      </div>
                   </>
                 )}
 
@@ -278,7 +320,7 @@ export default function LogIn() {
                     }}
                     className="login-button toggle-button"
                 >
-                    {isNewAccount ? t('Already have an account? Log In') : 'Create New Account'}
+                    {isNewAccount ? t('Already have an account? Log In') : t('Create New Account')}
                 </button>
             </form>
         </div>

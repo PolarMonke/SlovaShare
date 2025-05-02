@@ -59,6 +59,9 @@ const resources = {
         "Already have an account? Log In": "Already have an account? Log In",
         "Create New Account": "Create New Account",
         "Password In Use": "Password In Use",
+        "Resend Code": "Resend Code",
+        "Resening...": "Resening...",
+        "Sening...": "Sening...",
 
         "Create New Story": "Create New Story",
         "Title": "Title",
@@ -182,6 +185,9 @@ const resources = {
         "Log In": "Увайсці",
         "Already have an account? Log In": "Ужо маеце акаўнт? Увайсці",
         "Create New Account": "Стварыць новы акаўнт",
+        "Resend Code": "Адправіць яшчэ раз",
+        "Resening...": "Пераадпраўка...",
+        "Sening...": "Адпраўка...",
 
         "Create New Story": "Стварыць новае апавяданне",
         "Title": "Назва",
