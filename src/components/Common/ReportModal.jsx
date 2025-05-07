@@ -21,6 +21,7 @@ const ReportModal = ({ onClose, onSubmit }) => {
                     <select 
                         value={reportReason}
                         onChange={(e) => setReportReason(e.target.value)}
+                        className="report-select"
                         required
                     >
                         <option value="">{t('Select a reason')}</option>
@@ -35,6 +36,7 @@ const ReportModal = ({ onClose, onSubmit }) => {
                     <textarea
                         value={reportDetails}
                         onChange={(e) => setReportDetails(e.target.value)}
+                        className="universal-textarea"
                         placeholder={t('Please provide details about your report')}
                     />
                 </div>
@@ -45,6 +47,7 @@ const ReportModal = ({ onClose, onSubmit }) => {
                     <button 
                         onClick={handleSubmit}
                         disabled={!reportReason}
+                        className="submit-report-button"
                     >
                         {t('Submit Report')}
                     </button>

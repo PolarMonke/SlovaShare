@@ -4,7 +4,7 @@
     padding: 2rem;
     color: var(--text-color);
     background-color: var(--bg-color);
-    border-radius: 12px;
+    border-radius: 2rem;
 }
 
 .story-header {
@@ -52,11 +52,11 @@
     width: 100%;
     height: 100%;
     margin: 2rem 0;
-    border-radius: 10px;
+    border-radius: 2rem;
     overflow: hidden;
 }
 div .story-cover {
-    border-radius: 10px;
+    border-radius: 2rem;
 }
 
 .story-cover img {
@@ -89,7 +89,7 @@ div .story-cover {
     gap: 0.6rem;
     padding: 0.6rem 1.25rem;
     border: none;
-    border-radius: 24px;
+    border-radius: 2rem;
     background-color: var(--header-bg-color);
     color: var(--text-color);
     cursor: pointer;
@@ -117,7 +117,7 @@ div .story-cover {
 .tag {
     background-color: var(--header-bg-color);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: 2rem;
     padding: 0.35rem 0.9rem;
     font-size: 0.8rem;
     color: var(--text-color);
@@ -155,13 +155,17 @@ div .story-cover {
     margin-top: 1.5rem;
 }
 
+/* Part Component Styles */
 .story-part {
     margin-bottom: 2.5rem;
     padding: 1.5rem;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 2rem;
     background-color: var(--header-bg-color);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .story-part:hover {
@@ -172,9 +176,10 @@ div .story-cover {
 .part-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 0.5rem;
     font-size: 0.95rem;
-    color: var(--border-color-hover);
 }
 
 .part-order {
@@ -184,12 +189,80 @@ div .story-cover {
 
 .part-author {
     font-style: italic;
+    color: var(--border-color-hover);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.part-content-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .part-content {
     line-height: 1.7;
     white-space: pre-wrap;
     font-size: 1.05rem;
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+
+
+.part-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.edit-part-button,
+.delete-part-button,
+.save-edit-button,
+.cancel-edit-button {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.edit-part-button {
+    background-color: transparent;
+    color: var(--border-color-focus);
+    border: 2px solid var(--border-color-focus);
+}
+
+.delete-part-button {
+    background-color: transparent;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+}
+
+.save-edit-button {
+    background-color: var(--border-color-focus);
+    color: white;
+    border: 2px solid var(--border-color-focus);
+}
+
+.cancel-edit-button {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+}
+
+.edit-part-button:hover,
+.delete-part-button:hover,
+.save-edit-button:hover,
+.cancel-edit-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.delete-part-button:hover {
+    background-color: rgba(255, 107, 107, 0.1);
 }
 
 .comments-section {
@@ -228,11 +301,13 @@ div .story-cover {
     min-height: 120px;
     padding: 1rem;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 2rem;
     background-color: var(--header-bg-color);
     color: var(--text-color);
     resize: vertical;
     margin-bottom: 1rem;
+    max-width: 2 00px;
+    
     font-size: 1rem;
     transition: border-color 0.2s ease;
 }
@@ -263,7 +338,7 @@ div .story-cover {
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 2rem;
     background-color: var(--header-bg-color);
     transition: transform 0.2s ease;
 }
@@ -360,7 +435,7 @@ div .story-cover {
     cursor: pointer;
     font-size: 1.2rem;
     padding: 0.5rem;
-    border-radius: 50%;
+    border-radius: 2rem;
     transition: all 0.2s ease;
 }
 
@@ -386,7 +461,7 @@ div .story-cover {
     background-color: var(--header-bg-color);
     color: var(--text-color);
     border: 1px solid var(--border-color);
-    border-radius: 20px;
+    border-radius: 2rem;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -399,7 +474,7 @@ div .story-cover {
     margin: 2rem 0;
     padding: 1.75rem;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 2rem;
     background-color: var(--header-bg-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
@@ -409,30 +484,7 @@ div .story-cover {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.add-part-form textarea {
-    font-family: 'DM Sans', sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 300;
-    font-style: normal;
 
-    padding: 5px;
-    width: 100%;
-    min-height: 180px;
-    margin-bottom: 1.5rem;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    resize: vertical;
-    font-size: 1.05rem;
-    line-height: 1.6;
-    transition: all 0.3s ease;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-.add-part-form textarea:focus {
-    outline: none;
-    border-color: var(--border-color-focus);
-}
 
 .add-part-actions {
     display: flex;
@@ -555,7 +607,7 @@ div .story-cover {
 .modal-content {
     background-color: var(--bg-color);
     border: 2px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 2rem;
     padding: 2rem;
     width: 90%;
     max-width: 500px;
@@ -614,28 +666,14 @@ div .story-cover {
     padding: 0.75rem;
     margin-bottom: 1.5rem;
     border: 2px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 2rem;
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'DM Sans', sans-serif;
     font-size: 1rem;
 }
 
-.report-form textarea {
-    width: 100%;
-    min-height: 150px;
-    padding: 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    resize: vertical;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-}
 
-.report-form textarea:focus,
 .report-form select:focus {
     outline: none;
     border-color: var(--border-color-focus);
@@ -683,24 +721,7 @@ div .story-cover {
     margin-top: 1rem;
 }
 
-.part-edit-form textarea {
-    width: 100%;
-    min-height: 150px;
-    padding: 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    resize: vertical;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
 
-.part-edit-form textarea:focus {
-    outline: none;
-    border-color: var(--border-color-focus);
-}
 
 .part-edit-actions {
     display: flex;

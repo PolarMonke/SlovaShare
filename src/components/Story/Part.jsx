@@ -24,40 +24,57 @@ const Part = ({
                 <span className="part-author">
                     {t('By')} {part.author.login}
                 </span>
-                {canEdit && (
-                    <div className="part-actions">
-                        {isEditing ? (
-                            <>
-                                <button onClick={() => onEditSave(part.id)}>
-                                    {t('Save')}
-                                </button>
-                                <button onClick={onEditCancel}>
-                                    {t('Cancel')}
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={onEditStart}>
-                                    {t('Edit')}
-                                </button>
-                                <button onClick={() => onDelete(part.id)}>
-                                    {t('Delete')}
-                                </button>
-                            </>
-                        )}
-                    </div>
-                )}
             </div>
-            <div className="part-content">
+            
+            <div className="part-content-container">
                 {isEditing ? (
                     <textarea
                         value={editedContent}
                         onChange={(e) => onEditContentChange(e.target.value)}
+                        className="universal-textarea"
                     />
                 ) : (
-                    part.content
+                    <div className="part-content">
+                        {part.content}
+                    </div>
                 )}
             </div>
+
+            {canEdit && (
+                <div className="part-actions">
+                    {isEditing ? (
+                        <>
+                            <button 
+                                onClick={() => onEditSave(part.id)}
+                                className="save-edit-button"
+                            >
+                                {t('Save')}
+                            </button>
+                            <button 
+                                onClick={onEditCancel}
+                                className="cancel-edit-button"
+                            >
+                                {t('Cancel')}
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button 
+                                onClick={onEditStart}
+                                className="edit-part-button"
+                            >
+                                {t('Edit')}
+                            </button>
+                            <button 
+                                onClick={() => onDelete(part.id)}
+                                className="delete-part-button"
+                            >
+                                {t('Delete')}
+                            </button>
+                        </>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

@@ -23,6 +23,7 @@ const CommentsSection = ({
             {currentUser ? (
                 <form onSubmit={onCommentSubmit} className="comment-form">
                     <textarea
+                        className='universal-textarea'
                         value={commentText}
                         onChange={(e) => onCommentTextChange(e.target.value)}
                         placeholder={t('Write your comment here...')}

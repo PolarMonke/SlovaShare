@@ -130,6 +130,7 @@ const StoryParts = ({ story, currentUser, isOwner, onUpdateStory }) => {
             {showAddPartForm && (
                 <form onSubmit={handleAddPart} className="add-part-form">
                     <textarea
+                        className='universal-textarea'
                         value={newPartContent}
                         onChange={(e) => {
                             setNewPartContent(e.target.value);
