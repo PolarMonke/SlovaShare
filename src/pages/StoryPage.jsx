@@ -18,8 +18,17 @@ const StoryPage = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
     const [commentCount, setCommentCount] = useState(0);
+
     const [showAddPartForm, setShowAddPartForm] = useState(false);
     const [newPartContent, setNewPartContent] = useState('');
+    const [isPartValid, setIsPartValid] = useState(false);
+
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+    const [reportDetails, setReportDetails] = useState('');
+
+    const [editingPartId, setEditingPartId] = useState(null);
+    const [editedPartContent, setEditedPartContent] = useState('');
 
     useEffect(() => {
         const fetchStoryData = async () => {
@@ -72,12 +81,22 @@ const StoryPage = () => {
         fetchStoryData();
     }, [id, currentUser, navigate]);
 
+    useEffect(() => {
+        setIsPartValid(newPartContent.trim().length >= 10);
+    }, [newPartContent]);
+
     const handleAddPart = async (e) => {
         e.preventDefault();
-        if (!newPartContent.trim()) return;
+        const trimmedContent = newPartContent.trim();
+        
+        // Validate part length
+        if (trimmedContent.length < 10) {
+            setError(t('Part must be at least 10 characters long'));
+            return;
+        }
     
         try {
-            console.log("Sending part content:", newPartContent);
+            console.log("Sending part content:", trimmedContent);
             const token = localStorage.getItem('authToken');
             if (!token) {
                 throw new Error('No authentication token found');
@@ -89,19 +108,19 @@ const StoryPage = () => {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ content: newPartContent.trim() })
+                body: JSON.stringify({ content: trimmedContent })
             });
     
-            console.log("Response status:", response.status); // Debug log
+            console.log("Response status:", response.status);
             
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.error("Error details:", errorData); // Debug log
+                console.error("Error details:", errorData);
                 throw new Error(errorData.message || 'Failed to add part');
             }
     
             const newPart = await response.json();
-            console.log("New part created:", newPart); // Debug log
+            console.log("New part created:", newPart);
             
             setStory(prev => ({
                 ...prev,
@@ -110,6 +129,7 @@ const StoryPage = () => {
             }));
             setNewPartContent('');
             setShowAddPartForm(false);
+            setError(null);
         } catch (err) {
             console.error('Error adding part:', err);
             setError(err.message || 'Failed to add part. Please try again.');
@@ -217,6 +237,95 @@ const StoryPage = () => {
         }
     };
 
+    const handleReportSubmit = async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await fetch(`http://localhost:5076/stories/${id}/reports`, {
+                method: 'POST',
+                headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                Reason: reportReason,
+                Details: reportDetails
+                })
+            });
+        
+            if (!response.ok) throw new Error('Failed to submit report');
+        
+            setShowReportModal(false);
+            setReportReason('');
+            setReportDetails('');
+            alert('Story reported successfully');
+        } 
+        catch (err) {
+            console.error('Error reporting story:', err);
+            setError(err.message);
+        }
+    };
+
+    
+    const handleEditPart = (part) => {
+        setEditingPartId(part.id);
+        setEditedPartContent(part.content);
+    };
+    
+    const handleSaveEdit = async (partId) => {
+        try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:5076/stories/${id}/storyparts/${partId}`, {
+            method: 'PUT',
+            headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            Content: editedPartContent
+            })
+        });
+    
+        if (!response.ok) throw new Error('Failed to update part');
+    
+        setStory(prev => ({
+            ...prev,
+            parts: prev.parts.map(p => 
+            p.id === partId ? { ...p, content: editedPartContent } : p
+            )
+        }));
+        setEditingPartId(null);
+        } catch (err) {
+        console.error('Error updating part:', err);
+        setError(err.message);
+        }
+    };
+    
+    const handleDeletePart = async (partId) => {
+        if (!window.confirm(t('Are you sure you want to delete this part?'))) return;
+        
+        try {
+        const token = localStorage.getItem('authToken');
+        const response = await fetch(`http://localhost:5076/stories/${id}/storyparts/${partId}`, {
+            method: 'DELETE',
+            headers: {
+            'Authorization': `Bearer ${token}`
+            }
+        });
+    
+        if (!response.ok) throw new Error('Failed to delete part');
+    
+        setStory(prev => ({
+            ...prev,
+            parts: prev.parts.filter(p => p.id !== partId),
+            partsCount: prev.partsCount - 1
+        }));
+        } catch (err) {
+        console.error('Error deleting part:', err);
+        setError(err.message);
+        }
+    };
+  
+
     if (loading) return <div className="loading">{t('Loading...')}</div>;
     if (error) return <div className="error">{error}</div>;
     if (!story) return <div className="error">{t('Story not found')}</div>;
@@ -236,6 +345,56 @@ const StoryPage = () => {
                         >
                             <FaEdit />
                         </button>
+                    )}
+                    {!isOwner && currentUser && (
+                    <button 
+                        onClick={() => setShowReportModal(true)}
+                        className="report-button"
+                        title={t('Report Story')}
+                    >
+                        {t('Report')}
+                    </button>
+                    )}
+
+                    {showReportModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                        <h3>{t('Report Story')}</h3>
+                        <div className="form-group">
+                            <label>{t('Reason')}</label>
+                            <select 
+                            value={reportReason}
+                            onChange={(e) => setReportReason(e.target.value)}
+                            required
+                            >
+                            <option value="">{t('Select a reason')}</option>
+                            <option value="Spam">{t('Spam')}</option>
+                            <option value="Inappropriate">{t('Inappropriate Content')}</option>
+                            <option value="Plagiarism">{t('Plagiarism')}</option>
+                            <option value="Other">{t('Other')}</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>{t('Details')}</label>
+                            <textarea
+                            value={reportDetails}
+                            onChange={(e) => setReportDetails(e.target.value)}
+                            placeholder={t('Please provide details about your report')}
+                            />
+                        </div>
+                        <div className="modal-actions">
+                            <button onClick={() => setShowReportModal(false)}>
+                            {t('Cancel')}
+                            </button>
+                            <button 
+                            onClick={handleReportSubmit}
+                            disabled={!reportReason}
+                            >
+                            {t('Submit Report')}
+                            </button>
+                        </div>
+                        </div>
+                    </div>
                     )}
                 </div>
                 
@@ -294,42 +453,89 @@ const StoryPage = () => {
                 </div>
 
                 {showAddPartForm && (
-                    <form onSubmit={handleAddPart} className="add-part-form">
-                        <textarea
-                            value={newPartContent}
-                            onChange={(e) => setNewPartContent(e.target.value)}
-                            placeholder={t('Write your part here...')}
-                            required
-                        />
-                        <div className="add-part-actions">
-                            <button type="submit" className="submit-part">
-                                {t('Submit Part')}
-                            </button>
-                            <button 
-                                type="button" 
-                                onClick={() => setShowAddPartForm(false)}
-                                className="cancel-add-part"
-                            >
-                                {t('Cancel')}
-                            </button>
+                <form onSubmit={handleAddPart} className="add-part-form">
+                    <textarea
+                        value={newPartContent}
+                        onChange={(e) => {
+                            setNewPartContent(e.target.value);
+                            setIsPartValid(e.target.value.trim().length >= 10);
+                        }}
+                        placeholder={t('Write your part here (minimum 10 characters)...')}
+                        required
+                        minLength={10}
+                    />
+                    <div className="add-part-actions">
+                        <button 
+                            type="submit" 
+                            className={`submit-part ${!isPartValid ? 'disabled' : ''}`}
+                            disabled={!isPartValid}
+                        >
+                            {t('Submit Part')}
+                        </button>
+                        <button 
+                            type="button" 
+                            onClick={() => {
+                                setShowAddPartForm(false);
+                                setNewPartContent('');
+                                setIsPartValid(false);
+                            }}
+                            className="cancel-add-part"
+                        >
+                            {t('Cancel')}
+                        </button>
+                    </div>
+                    {!isPartValid && newPartContent.length > 0 && (
+                        <div className="validation-message">
+                            {t('Part must be at least 10 characters long')}
                         </div>
-                    </form>
+                    )}
+                </form>
                 )}
 
                 {story.parts && story.parts.length > 0 ? (
                     <div className="parts-container">
                         {story.parts.sort((a, b) => a.order - b.order).map(part => (
-                            <div key={part.id} className="story-part">
-                                <div className="part-header">
-                                    <span className="part-order">{t('Part')} {part.order}</span>
-                                    <span className="part-author">
-                                        {t('By')} {part.author.login}
-                                    </span>
+                        <div key={part.id} className="story-part">
+                            <div className="part-header">
+                            <span className="part-order">{t('Part')} {part.order}</span>
+                            <span className="part-author">
+                                {t('By')} {part.author.login}
+                            </span>
+                            {(currentUser?.id === part.author.id || isOwner) && (
+                                <div className="part-actions">
+                                {editingPartId === part.id ? (
+                                    <>
+                                    <button onClick={() => handleSaveEdit(part.id)}>
+                                        {t('Save')}
+                                    </button>
+                                    <button onClick={() => setEditingPartId(null)}>
+                                        {t('Cancel')}
+                                    </button>
+                                    </>
+                                ) : (
+                                    <>
+                                    <button onClick={() => handleEditPart(part)}>
+                                        {t('Edit')}
+                                    </button>
+                                    <button onClick={() => handleDeletePart(part.id)}>
+                                        {t('Delete')}
+                                    </button>
+                                    </>
+                                )}
                                 </div>
-                                <div className="part-content">
-                                    {part.content}
-                                </div>
+                            )}
                             </div>
+                            <div className="part-content">
+                            {editingPartId === part.id ? (
+                                <textarea
+                                value={editedPartContent}
+                                onChange={(e) => setEditedPartContent(e.target.value)}
+                                />
+                            ) : (
+                                part.content
+                            )}
+                            </div>
+                        </div>
                         ))}
                     </div>
                 ) : (

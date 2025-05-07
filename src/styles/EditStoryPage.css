@@ -499,6 +499,16 @@
     border: 1px solid rgba(255, 68, 68, 0.3);
     font-size: 0.9rem;
 }
+/* Delete Confirmation Modal */
+.delete-confirm-modal .modal-content {
+    max-width: 400px;
+}
+
+.delete-confirm-modal p {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
 
 /* Responsive */
 @media (max-width: 768px) {

@@ -517,6 +517,226 @@ div .story-cover {
     margin-top: 1rem;
 }
 
+/* Report Modal Styles */
+.report-button {
+    background-color: transparent;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.report-button:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+    transform: translateY(-2px);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.modal-actions button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.modal-actions button:first-child {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+}
+
+.modal-actions button:first-child:hover {
+    background-color: var(--border-color);
+}
+
+.modal-actions button:last-child {
+    background-color: #ff6b6b;
+    color: white;
+    border: 2px solid #ff6b6b;
+}
+
+.modal-actions button:last-child:hover {
+    background-color: #ff5252;
+    border-color: #ff5252;
+}
+
+/* Report Form Styles */
+.report-form select {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+}
+
+.report-form textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    resize: vertical;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.report-form textarea:focus,
+.report-form select:focus {
+    outline: none;
+    border-color: var(--border-color-focus);
+    box-shadow: 0 0 0 3px rgba(165, 148, 249, 0.2);
+}
+
+/* Part Editing Styles */
+.part-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.part-actions button {
+    background-color: transparent;
+    border: 2px solid var(--border-color);
+    border-radius: 2rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.part-actions button:hover {
+    background-color: var(--border-color);
+}
+
+.part-actions button.edit-button {
+    color: var(--border-color-focus);
+    border-color: var(--border-color-focus);
+}
+
+.part-actions button.delete-button {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.part-actions button.delete-button:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+}
+
+.part-edit-form {
+    margin-top: 1rem;
+}
+
+.part-edit-form textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    resize: vertical;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.part-edit-form textarea:focus {
+    outline: none;
+    border-color: var(--border-color-focus);
+}
+
+.part-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.part-edit-actions button {
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+}
+
+.part-edit-actions button.save-button {
+    background-color: var(--border-color-focus);
+    color: white;
+    border: 2px solid var(--border-color-focus);
+}
+
+.part-edit-actions button.cancel-button {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 768px) {
     .add-part-form {
         padding: 1.25rem;
@@ -535,5 +755,21 @@ div .story-cover {
     .story-cover {
         width: 100%;
         height: 100%;
+    }
+    .modal-content {
+        padding: 1.5rem;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-actions button {
+        width: 100%;
+    }
+    
+    .part-actions {
+        flex-direction: column;
+        align-items: flex-end;
     }
 }

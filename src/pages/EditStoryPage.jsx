@@ -26,6 +26,8 @@ const EditStoryPage = () => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploadError, setUploadError] = useState('');
 
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
     useEffect(() => {
         const fetchStory = async () => {
             try {
@@ -233,6 +235,25 @@ const EditStoryPage = () => {
             setIsSubmitting(false);
         }
     };
+    const handleDeleteStory = async () => {
+        try {
+            const response = await fetch(`http://localhost:5076/stories/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
+            });
+        
+            if (!response.ok) throw new Error('Failed to delete story');
+        
+            navigate('/');
+        } 
+        catch (err) {
+            setError(err.message);
+            console.error('Error deleting story:', err);
+        }
+    };
+
 
     if (!story) {
         return <div className="loading">{t('Loading...')}</div>;
@@ -474,13 +495,40 @@ const EditStoryPage = () => {
                     {/* Submit Button */}
                     <div className="form-actions">
                         <button 
+                            type="button"
+                            className="delete-story-button"
+                            onClick={() => setShowDeleteConfirm(true)}
+                        >
+                            {t('Delete Story')}
+                        </button>
+                        <button 
                             type="submit" 
                             className="submit-button"
                             disabled={isSubmitting || !formData.title}
                         >
                             {isSubmitting ? t('Saving...') : t('Save Changes')}
                         </button>
-                    </div>
+                        </div>
+
+                        {showDeleteConfirm && (
+                        <div className="modal-overlay">
+                            <div className="modal-content">
+                            <h3>{t('Delete Story')}</h3>
+                            <p>{t('Are you sure you want to delete this story? This action cannot be undone.')}</p>
+                            <div className="modal-actions">
+                                <button onClick={() => setShowDeleteConfirm(false)}>
+                                {t('Cancel')}
+                                </button>
+                                <button 
+                                onClick={handleDeleteStory}
+                                className="confirm-delete-button"
+                                >
+                                {t('Delete')}
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                        )}
                 </form>
             </div>
         </div>
