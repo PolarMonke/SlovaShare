@@ -35,7 +35,7 @@
 .detail-group {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    border-radius: 10px;
+    border-radius: 2rem;
     border: 1px solid var(--border-color);
 }
 
