@@ -93,6 +93,7 @@ const resources = {
         "Invalid file type. Only JPEG, PNG, GIF, WEBP allowed.": "Invalid file type. Only JPEG, PNG, GIF, WEBP allowed.",
         "JPEG, PNG, GIF or WEBP. Max 5MB.": "JPEG, PNG, GIF or WEBP. Max 5MB.",
         "Delete Story": "Delete Story",
+        "Edit": "Edit",
         
         "Loading Stories..." : "Loading Stories...",
         "Latest Stories": "Latest Stories",
@@ -233,6 +234,7 @@ const resources = {
         "Invalid file type. Only JPEG, PNG, GIF, WEBP allowed.": "Няправільны тып файла. Дазваляюцца толькі JPEG, PNG, GIF, WEBP.",
         "JPEG, PNG, GIF or WEBP. Max 5MB.": "JPEG, PNG, GIF ці WEBP. Максімум 5MB.",
         "Delete Story": "Выдаліць апавяданне",
+        "Edit": "Рэдагаваць",
         
         "Loading Stories..." : "Апавяданні загружаюцца...",
         "Latest Stories": "Апошнія апавяданні",
