@@ -28,14 +28,12 @@ const resources = {
 
         "Username": "Username",
         "Email": "Email",
-        "Description": "Description",
         "Description Placeholder": "Tell us about yourself...",
         "Profile Image": "Profile Image",
         "Save Changes": "Save Changes",
         "Cancel": "Cancel",
         
         "Preview" : "Preview",
-        "Remove" : "Remove",
         "Drag & drop image here" : "Drag & drop image here",
         "or" : "or",
         "Browse files" : "Browse files",
@@ -94,8 +92,8 @@ const resources = {
         "JPEG, PNG, GIF or WEBP. Max 5MB.": "JPEG, PNG, GIF or WEBP. Max 5MB.",
         "Delete Story": "Delete Story",
         "Edit": "Edit",
+        "Save": "Save",
         
-        "Loading Stories..." : "Loading Stories...",
         "Latest Stories": "Latest Stories",
         "Your Stories": "Your Stories",
         "By": "By",
@@ -168,14 +166,12 @@ const resources = {
 
         "Username": "Імя",
         "Email": "Электронная пошта",
-        "Description": "Апісанне",
         "Description Placeholder": "Раскажыце пра сябе...",
         "Profile Image": "Фота профілю",
         "Save Changes": "Захаваць змены",
         "Cancel": "Скасаваць",
 
         "Preview" : "Прэв'ю",
-        "Remove" : "Выдаліць",
         "Drag & drop image here" : "Перацягніце выяву сюды",
         "or" : "або",
         "Browse files" : "Адкрыць файлы",
@@ -235,8 +231,8 @@ const resources = {
         "JPEG, PNG, GIF or WEBP. Max 5MB.": "JPEG, PNG, GIF ці WEBP. Максімум 5MB.",
         "Delete Story": "Выдаліць апавяданне",
         "Edit": "Рэдагаваць",
+        "Save": "Захаваць",
         
-        "Loading Stories..." : "Апавяданні загружаюцца...",
         "Latest Stories": "Апошнія апавяданні",
         "Your Stories": "Вашыя апавяданні",
         "By": "Ад",
