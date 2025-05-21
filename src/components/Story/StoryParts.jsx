@@ -1,4 +1,3 @@
-// components/Story/StoryParts.jsx
 import React, { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';

@@ -1,6 +1,6 @@
-// components/Story/Comment.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FaReply } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
 const Comment = ({ comment, currentUser, isOwner, onDelete }) => {

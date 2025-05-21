@@ -1,5 +1,4 @@
-/* index.css */
-:root.light-theme {
+ :root.light-theme {
     --bg-color: #f5efff;
     --text-color: #2e073f;
     --secodary-bg-color: hsl(261, 100%, 92%);

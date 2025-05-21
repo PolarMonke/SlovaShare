@@ -41,12 +41,10 @@ const ImageUploader = ({ currentImage, onUploadComplete }) => {
             return;
         }
 
-        // Create preview
         const reader = new FileReader();
         reader.onload = () => setPreviewUrl(reader.result);
         reader.readAsDataURL(file);
 
-        // Prepare form data
         const formData = new FormData();
         formData.append('file', file);
 

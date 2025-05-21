@@ -27,7 +27,6 @@ const Calendar = ({ userId }) => {
 
                 console.log("Raw API data:", { stories, contributions });
                 
-                // Process both stories and contributions (story parts)
                 const contributionData = processContributions(stories, contributions);
                 console.log("Processed data:", contributionData);
                 setContributions(contributionData);
@@ -92,9 +91,8 @@ const Calendar = ({ userId }) => {
         const weeks = [];
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const todayString = today.toISOString().split('T')[0]; // Get today's date string once
+        const todayString = today.toISOString().split('T')[0];
         
-        // Calculate the start date (Sunday of the week 51 weeks ago)
         const startDate = new Date(today);
         startDate.setDate(today.getDate() - (51 * 7) - today.getDay());
         startDate.setHours(0, 0, 0, 0);
@@ -102,7 +100,6 @@ const Calendar = ({ userId }) => {
         const monthChanges = [];
         let currentMonth = startDate.getMonth();
         
-        // Find month changes
         for (let week = 0; week < 52; week++) {
             const weekDate = new Date(startDate);
             weekDate.setDate(startDate.getDate() + week * 7);
@@ -117,7 +114,6 @@ const Calendar = ({ userId }) => {
             }
         }
     
-        // Generate grid data
         for (let week = 0; week < 52; week++) {
             const weekDays = [];
             
@@ -138,7 +134,7 @@ const Calendar = ({ userId }) => {
                     date: dateString,
                     count,
                     colorLevel,
-                    isToday: dateString === todayString,  // Compare with pre-computed todayString
+                    isToday: dateString === todayString,
                     dayOfWeek: day
                 });
             }
@@ -151,7 +147,6 @@ const Calendar = ({ userId }) => {
 
     const { weeks, monthChanges } = generateCalendarData();
     const monthNames = [t('Jan'), t('Feb'), t('Mar'), t('Apr'), t('May'), t('Jun'), t('Jul'), t('Aug'), t('Sep'), t('Oct'), t('Nov'), t('Dec')];
-    //const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     if (loading) return <div className="calendar-loading">Loading...</div>;
     if (error) return <div className="calendar-error">Error: {error}</div>;
 
@@ -172,7 +167,6 @@ const Calendar = ({ userId }) => {
             </div>
             
             <div className="calendar-grid">
-                {/* Month labels */}
                 <div className="month-labels">
                     {monthChanges.map((change, i) => (
                         <div 
@@ -185,14 +179,6 @@ const Calendar = ({ userId }) => {
                     ))}
                 </div>
 
-                {/* Weekday labels
-                <div className="day-labels">
-                    {dayNames.map((day, i) => (
-                        <div key={i} className="day-label">{day}</div>
-                    ))}
-                </div> */}
-                
-                {/* Contribution grid */}
                 <div className="contribution-grid">
                     {weeks.map((week, weekIndex) => (
                         <div key={weekIndex} className="week-column">

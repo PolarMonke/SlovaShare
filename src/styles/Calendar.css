@@ -1,4 +1,3 @@
-/* Calendar.css */
 .compact-calendar {
     font-family: 'DM Sans', sans-serif;
     max-width: 100%;
@@ -36,7 +35,6 @@
     border-radius: 1px;
 }
 
-/* Light theme colors for scale */
 :root.light-theme {
     .color-box.level-0 { background-color: #e9d8ff; }
     .color-box.level-1 { background-color: #c4a1f2; }
@@ -45,7 +43,6 @@
     .color-box.level-4 { background-color: #5b00c2; }
 }
 
-/* Dark theme colors for scale */
 :root.dark-theme {
     .color-box.level-0 { background-color: #3b1e54; }
     .color-box.level-1 { background-color: #5a3a7a; }
@@ -116,7 +113,6 @@
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Light theme colors for cells */
 :root.light-theme {
     .day-cell.level-0 { background-color: #e9d8ff; }
     .day-cell.level-1 { background-color: #c4a1f2; }
@@ -125,7 +121,6 @@
     .day-cell.level-4 { background-color: #5b00c2; }
 }
 
-/* Dark theme colors for cells */
 :root.dark-theme {
     .day-cell.level-0 { background-color: #3b1e54; }
     .day-cell.level-1 { background-color: #5a3a7a; }
@@ -133,11 +128,6 @@
     .day-cell.level-3 { background-color: #9a72c6; }
     .day-cell.level-4 { background-color: #ba8eec; }
 }
-
-/* .day-cell.today {
-    border: 1px solid var(--border-color-focus);
-    box-sizing: border-box;
-} */
 
 .calendar-loading,
 .calendar-error {
@@ -163,8 +153,6 @@
         align-self: flex-end;
     }
 }
-
-/* Make scrollbar more visible */
 .compact-calendar::-webkit-scrollbar {
     height: 8px;
 }
