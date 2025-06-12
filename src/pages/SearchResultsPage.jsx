@@ -16,8 +16,8 @@ const SearchResultsPage = () => {
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
-        const query = searchParams.get('q') || '';
-        const tags = searchParams.getAll('tag') || [];
+        const query = searchParams.get('query') || '';
+        const tags = searchParams.getAll('tags') || [];
         
         setSelectedTags(tags);
         fetchResults(query, tags, page);
@@ -49,14 +49,18 @@ const SearchResultsPage = () => {
 
     const handleTagClick = (tag) => {
         const searchParams = new URLSearchParams(location.search);
-        const currentTags = searchParams.getAll('tag');
+        const currentTags = searchParams.getAll('tags');
+        const query = searchParams.get('query') || '';
         
         if (currentTags.includes(tag)) {
-            searchParams.delete('tag', tag);
+            const newTags = currentTags.filter(t => t !== tag);
+            searchParams.delete('tags');
+            newTags.forEach(t => searchParams.append('tags', t));
         } else {
-            searchParams.append('tag', tag);
+            searchParams.append('tags', tag);
         }
         
+        setPage(1);
         navigate(`/search?${searchParams.toString()}`);
     };
 
@@ -67,11 +71,32 @@ const SearchResultsPage = () => {
         <div className="search-results-container">
             <h1>{t('Search Results')}</h1>
             
+            {selectedTags.length > 0 && (
+                <div className="active-tags">
+                    <h3>{t('Active Filters')}:</h3>
+                    <div className="tag-list">
+                        {selectedTags.map(tag => (
+                            <span 
+                                key={tag} 
+                                className="tag active"
+                                onClick={() => handleTagClick(tag)}
+                            >
+                                #{tag}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            )}
+            
             {results?.results?.length > 0 ? (
                 <>
                     <div className="results-grid">
                         {results.results.map(story => (
-                            <StoryCard key={story.id} story={story} />
+                            <StoryCard 
+                                key={story.id} 
+                                story={story}
+                                onTagClick={handleTagClick}
+                            />
                         ))}
                     </div>
                     

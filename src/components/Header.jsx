@@ -32,6 +32,37 @@ export default function Header() {
         localStorage.setItem('i18nextLng', lng);
     };
 
+    const handleSearch = () => {
+        if (!searchQuery.trim()) {
+            navigate('/search');
+            return;
+        }
+
+        const queryParts = searchQuery.split(' ');
+        const searchTerms = [];
+        const tags = [];
+        
+        queryParts.forEach(part => {
+            if (part.startsWith('#')) {
+                tags.push(part.substring(1));
+            } else {
+                searchTerms.push(part);
+            }
+        });
+
+        const params = new URLSearchParams();
+        
+        if (searchTerms.length > 0) {
+            params.append('query', searchTerms.join(' '));
+        }
+        
+        if (tags.length > 0) {
+            tags.forEach(tag => params.append('tags', tag));
+        }
+
+        navigate(`/search?${params.toString()}`);
+    };
+
     React.useEffect(() => {
         const root = document.documentElement;
         if (isDarkMode) {
@@ -57,13 +88,13 @@ export default function Header() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyPress={(e) => {
                             if (e.key === 'Enter') {
-                                navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+                                handleSearch();
                             }
                         }}
                     />
                     <button 
                         className='search-button'
-                        onClick={() => navigate(`/search?q=${encodeURIComponent(searchQuery)}`)}
+                        onClick={handleSearch}
                     >
                         <FiSearch className="icon"/>
                     </button>
