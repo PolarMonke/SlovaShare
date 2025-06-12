@@ -1,10 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHeart, FaComment, FaEdit } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
+
 const StoryHeader = ({ story, isOwner, isLiked, likeCount, onEdit, onLike, onReport }) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const handleSearch = (tag) => {
+        navigate(`/search?tags=${tag}`);
+    };
 
     return (
         <div className="story-header">
@@ -66,7 +71,7 @@ const StoryHeader = ({ story, isOwner, isLiked, likeCount, onEdit, onLike, onRep
             
             <div className="story-tags">
                 {story.tags.map(tag => (
-                    <span key={tag} className="tag">{tag}</span>
+                    <button key={tag} className="tag" onClick={() => handleSearch(tag)}>{tag}</button>
                 ))}
             </div>
         </div>

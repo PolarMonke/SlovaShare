@@ -122,6 +122,7 @@ div .story-cover {
     font-size: 0.8rem;
     color: var(--text-color);
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .tag:hover {
