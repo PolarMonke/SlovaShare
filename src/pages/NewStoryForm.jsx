@@ -130,7 +130,7 @@ const NewStoryForm = () => {
                 body: JSON.stringify({
                     title: formData.title,
                     description: formData.description,
-                    isPublic: formData.isPublic,
+                    isPublic: true,
                     coverImageUrl: formData.coverImageUrl,
                     initialContent: formData.initialContent,
                     storyTags: formData.tags
@@ -327,29 +327,6 @@ const NewStoryForm = () => {
                         {uploadError && (
                             <div className="upload-error">{uploadError}</div>
                         )}
-                    </div>
-                    
-                    {/* Privacy Toggle */}
-                    <div className="form-group privacy-toggle">
-                        <label className="toggle-label">
-                            <input
-                                type="checkbox"
-                                id="isPublic"
-                                name="isPublic"
-                                checked={formData.isPublic}
-                                onChange={handleInputChange}
-                                className="toggle-input"
-                            />
-                            <span className="toggle-slider"></span>
-                        </label>
-                        <label htmlFor="isPublic" className="privacy-label">
-                            {formData.isPublic ? t('Public Story') : t('Private Story')}
-                        </label>
-                        <div className="privacy-hint">
-                            {formData.isPublic 
-                                ? t('Anyone can view and contribute to this story')
-                                : t('Only you can view and contribute to this story')}
-                        </div>
                     </div>
                     
                     {/* Submit Button */}

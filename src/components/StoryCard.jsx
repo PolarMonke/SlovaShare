@@ -27,6 +27,10 @@ const StoryCard = ({ story }) => {
         navigate(`/story/${story.id}`);
     };
 
+    const handleSearch = (tag) => {
+        navigate(`/search?tags=${tag}`);
+    };
+
     const placeholderImage = isDarkMode 
         ? '/img/cover-placeholder-dark.png' 
         : '/img/cover-placeholder-light.png';
@@ -70,7 +74,10 @@ const StoryCard = ({ story }) => {
                     </div>
                     <div className="story-tags">
                         {story.tags.map(tag => (
-                            <span key={tag} className="tag">{tag}</span>
+                            <button key={tag} className="tag" onClick={(e) => {
+                                handleSearch(tag); 
+                                e.stopPropagation();
+                            }}>{tag}</button>
                         ))}
                     </div>
                 </div>
